@@ -1,0 +1,59 @@
+---
+theme: light
+font: serif
+---
+
+# Tutorial
+
+How to use
+This app
+
+# Step 1
+
+Write
+Your text
+
+# Step 2
+
+Separate slides
+With blank lines
+
+# Step 3
+
+Click
+Start Presentation
+
+# Navigation
+
+Arrow keys
+Space bar
+Swipe gestures
+
+# Shortcuts
+
+Press ?
+For help
+
+# Customization
+
+Choose theme
+Choose font
+
+# Tips
+
+Keep it
+Short
+
+Keep it
+Bold
+
+Keep it
+Simple
+
+# That's it!
+
+Now try
+Creating
+Your own
+
+# Happy Presenting!

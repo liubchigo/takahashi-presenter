@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takahashi-Style Presenter</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Takahashi-Style Presenter</h1>
+            <p class="tagline">Simple. Bold. Impactful.</p>
+        </header>
+
+        <main class="editor-section">
+            <div class="editor-controls">
+                <div class="example-selector">
+                    <label for="exampleSelect">Load Example:</label>
+                    <select id="exampleSelect">
+                        <option value="">-- Choose an example --</option>
+                        <option value="liuba-story">Liuba Story</option>
+                    </select>
+                </div>
+                <button id="downloadBtn" class="btn btn-secondary">Download</button>
+                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+                <label for="fileInput" class="btn btn-secondary">
+                    Upload File
+                    <input type="file" id="fileInput" accept=".txt,.md" hidden>
+                </label>
+            </div>
+
+            <div id="dropZone" class="drop-zone">
+                <textarea 
+                    id="slideInput" 
+                    placeholder="Enter your presentation here...
+
+Example with metadata:
+---
+theme: dark
+font: sans-serif
+---
+
+# Welcome
+
+To
+
+Takahashi
+
+Method
+
+Simple
+Is
+Better
+
+One
+Idea
+
+Per
+Slide
+
+You can also use --- to separate slides.
+
+Or just use blank lines!"
+                    rows="20"
+                ></textarea>
+                <div class="drop-overlay hidden" id="dropOverlay">
+                    <div class="drop-message">
+                        📁 Drop your file here
+                    </div>
+                </div>
+            </div>
+
+            <div id="validationFeedback" class="validation-feedback"></div>
+
+            <div class="settings">
+                <h3>Settings</h3>
+                <div class="setting-group">
+                    <label for="themeSelect">Theme:</label>
+                    <select id="themeSelect">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                        <option value="blue">Blue Gradient</option>
+                        <option value="green">Green Gradient</option>
+                        <option value="purple">Purple Gradient</option>
+                        <option value="red">Red Gradient</option>
+                        <option value="ocean">Ocean</option>
+                        <option value="sunset">Sunset</option>
+                        <option value="monochrome">Monochrome</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="fontSelect">Font:</label>
+                    <select id="fontSelect">
+                        <option value="sans-serif">Sans Serif</option>
+                        <option value="serif">Serif</option>
+                        <option value="monospace">Monospace</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="animationToggle">
+                        <input type="checkbox" id="animationToggle" checked>
+                        Enable slide animations
+                    </label>
+                </div>
+                <div class="theme-preview" id="themePreview">
+                    <div class="preview-slide">Preview</div>
+                </div>
+            </div>
+
+            <button id="startPresentation" class="btn btn-primary">Start Presentation</button>
+        </main>
+
+        <footer>
+            <p>Press <kbd>?</kbd> during presentation for keyboard shortcuts</p>
+            <p><a href="INPUT-FORMAT.md" target="_blank">View Input Format Reference</a></p>
+        </footer>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/parser.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

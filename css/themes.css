@@ -1,0 +1,150 @@
+/* Theme Styles */
+
+/* Dark Theme (Default) */
+.theme-dark .slide-container {
+    background: #000000;
+    color: #ffffff;
+}
+
+.theme-dark .slide.emphasis-slide {
+    color: #60a5fa;
+}
+
+/* Light Theme */
+.theme-light .slide-container {
+    background: #ffffff;
+    color: #000000;
+}
+
+.theme-light .progress-bar {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .slide-counter {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.theme-light .slide.emphasis-slide {
+    color: #2563eb;
+}
+
+/* Blue Theme */
+.theme-blue .slide-container {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: #ffffff;
+}
+
+.theme-blue .slide.emphasis-slide {
+    color: #fbbf24;
+}
+
+.theme-blue .slide.title-slide {
+    border-bottom-color: #60a5fa;
+}
+
+/* Green Theme */
+.theme-green .slide-container {
+    background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+    color: #ffffff;
+}
+
+.theme-green .slide.emphasis-slide {
+    color: #fcd34d;
+}
+
+.theme-green .slide.title-slide {
+    border-bottom-color: #34d399;
+}
+
+/* Purple Theme */
+.theme-purple .slide-container {
+    background: linear-gradient(135deg, #581c87 0%, #a855f7 100%);
+    color: #ffffff;
+}
+
+.theme-purple .slide.emphasis-slide {
+    color: #fbbf24;
+}
+
+.theme-purple .slide.title-slide {
+    border-bottom-color: #c084fc;
+}
+
+/* Red Theme */
+.theme-red .slide-container {
+    background: linear-gradient(135deg, #991b1b 0%, #ef4444 100%);
+    color: #ffffff;
+}
+
+.theme-red .slide.emphasis-slide {
+    color: #fde047;
+}
+
+.theme-red .slide.title-slide {
+    border-bottom-color: #f87171;
+}
+
+/* Ocean Theme */
+.theme-ocean .slide-container {
+    background: linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%);
+    color: #ffffff;
+}
+
+.theme-ocean .slide.emphasis-slide {
+    color: #fed7aa;
+}
+
+.theme-ocean .slide.title-slide {
+    border-bottom-color: #38bdf8;
+}
+
+/* Sunset Theme */
+.theme-sunset .slide-container {
+    background: linear-gradient(135deg, #7c2d12 0%, #f97316 50%, #fbbf24 100%);
+    color: #ffffff;
+}
+
+.theme-sunset .slide.emphasis-slide {
+    color: #fef3c7;
+}
+
+.theme-sunset .slide.title-slide {
+    border-bottom-color: #fb923c;
+}
+
+/* Monochrome Theme */
+.theme-monochrome .slide-container {
+    background: #374151;
+    color: #f9fafb;
+}
+
+.theme-monochrome .progress-bar {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-monochrome .slide.emphasis-slide {
+    color: #d1d5db;
+    font-style: italic;
+}
+
+/* Font Families */
+.font-sans-serif .slide {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.font-serif .slide {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.font-monospace .slide {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Smooth transitions for theme changes */
+.slide-container {
+    transition: background 0.5s ease;
+}
+
+.slide {
+    transition: color 0.3s ease;
+}

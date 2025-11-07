@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/presenter.css">
+    <link rel="stylesheet" href="css/themes.css">
+</head>
+<body class="presentation-mode">
+    <div id="slideContainer" class="slide-container">
+        <div id="currentSlide" class="slide"></div>
+    </div>
+
+    <div id="overviewMode" class="overview-mode hidden">
+        <div class="overview-header">
+            <h2>Slide Overview</h2>
+            <button id="closeOverview" class="btn btn-small">Close (Esc)</button>
+        </div>
+        <div id="overviewGrid" class="overview-grid"></div>
+    </div>
+
+    <div id="controls" class="controls">
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+        </div>
+        <div class="controls-row">
+            <div id="timer" class="timer">0:00</div>
+            <div id="slideCounter" class="slide-counter">1 / 1</div>
+            <div id="percentage" class="percentage">0%</div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Keyboard Shortcuts</h2>
+            <ul>
+                <li><kbd>→</kbd> <kbd>Space</kbd> <kbd>↓</kbd> - Next slide</li>
+                <li><kbd>←</kbd> <kbd>↑</kbd> - Previous slide</li>
+                <li><kbd>Home</kbd> - First slide</li>
+                <li><kbd>End</kbd> - Last slide</li>
+                <li><kbd>O</kbd> - Toggle overview mode</li>
+                <li><kbd>A</kbd> - Toggle animations</li>
+                <li><kbd>F</kbd> - Toggle fullscreen</li>
+                <li><kbd>P</kbd> - Toggle progress bar</li>
+                <li><kbd>C</kbd> - Toggle slide counter</li>
+                <li><kbd>T</kbd> - Toggle timer</li>
+                <li><kbd>%</kbd> - Toggle percentage</li>
+                <li><kbd>H</kbd> - Hide/show all controls</li>
+                <li><kbd>R</kbd> - Reset timer</li>
+                <li><kbd>?</kbd> - Show/hide this help</li>
+                <li><kbd>Esc</kbd> - Exit presentation / Close modal</li>
+            </ul>
+            <button id="closeHelp" class="btn">Close</button>
+        </div>
+    </div>
+
+    <div id="exitModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Exit Presentation?</h2>
+            <p style="margin: 1.5rem 0;">Are you sure you want to exit the presentation?</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button id="confirmExit" class="btn">Exit</button>
+                <button id="cancelExit" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/parser.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/presenter.js"></script>
+</body>
+</html>
