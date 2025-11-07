@@ -23,7 +23,6 @@
                         <option value="liuba-story">Liuba Story</option>
                     </select>
                 </div>
-                <button id="shareBtn" class="btn btn-secondary">📤 Share Link</button>
                 <button id="downloadBtn" class="btn btn-secondary">Download</button>
                 <button id="clearBtn" class="btn btn-secondary">Clear</button>
                 <label for="fileInput" class="btn btn-secondary">
@@ -117,29 +116,6 @@ Or just use blank lines!"
             <p>Press <kbd>?</kbd> during presentation for keyboard shortcuts</p>
             <p><a href="INPUT-FORMAT.md" target="_blank">View Input Format Reference</a></p>
         </footer>
-    </div>
-
-    <!-- Share Link Modal -->
-    <div id="shareModal" class="modal hidden">
-        <div class="modal-content">
-            <h2>📤 Share Your Presentation</h2>
-            <p>To share this presentation, save it as a file in the <code>examples/</code> folder and use this URL format:</p>
-            <div class="share-url-container">
-                <input type="text" id="shareUrlInput" readonly>
-                <button id="copyUrlBtn" class="btn btn-small">Copy</button>
-            </div>
-            <div class="share-instructions">
-                <h3>Instructions:</h3>
-                <ol>
-                    <li>Save your presentation as <code>examples/<span id="suggestedFilename">my-presentation</span>.txt</code></li>
-                    <li>Commit and push to GitHub</li>
-                    <li>Share the URL above</li>
-                </ol>
-                <p><strong>Or</strong> use the direct link with current saved content:</p>
-                <input type="text" id="directUrl" readonly value="">
-            </div>
-            <button id="closeShare" class="btn">Close</button>
-        </div>
     </div>
 
     <script src="js/storage.js"></script>

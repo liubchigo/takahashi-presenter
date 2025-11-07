@@ -6,18 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const exampleSelect = document.getElementById('exampleSelect');
     const clearBtn = document.getElementById('clearBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-    const shareBtn = document.getElementById('shareBtn');
     const fileInput = document.getElementById('fileInput');
     const themeSelect = document.getElementById('themeSelect');
     const fontSelect = document.getElementById('fontSelect');
     const animationToggle = document.getElementById('animationToggle');
     const dropZone = document.getElementById('dropZone');
     const dropOverlay = document.getElementById('dropOverlay');
-    const shareModal = document.getElementById('shareModal');
-    const closeShareBtn = document.getElementById('closeShare');
-    const shareUrlInput = document.getElementById('shareUrlInput');
-    const copyUrlBtn = document.getElementById('copyUrlBtn');
-    const directUrlInput = document.getElementById('directUrl');
 
     // Example presentations
     const examples = {
@@ -147,71 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = 'presentation.txt';
         a.click();
         URL.revokeObjectURL(url);
-    });
-
-    // Share presentation
-    shareBtn.addEventListener('click', () => {
-        const content = slideInput.value;
-        if (!content.trim()) {
-            alert('Please add some content first!');
-            return;
-        }
-
-        // Get the base URL (works for both local and GitHub Pages)
-        const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
-        
-        // Generate a suggested filename from content or timestamp
-        let suggestedName = 'my-presentation';
-        const firstLine = content.split('\n').find(line => line.trim() && !line.startsWith('---'));
-        if (firstLine) {
-            suggestedName = firstLine.trim()
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '')
-                .substring(0, 30);
-        }
-        
-        document.getElementById('suggestedFilename').textContent = suggestedName;
-        
-        // Generate shareable URL
-        const shareUrl = `${baseUrl}presenter.html?load=${suggestedName}`;
-        shareUrlInput.value = shareUrl;
-        
-        // Direct URL (uses localStorage)
-        directUrlInput.value = `${baseUrl}presenter.html`;
-        
-        shareModal.classList.remove('hidden');
-    });
-
-    // Copy URL to clipboard
-    copyUrlBtn.addEventListener('click', async () => {
-        try {
-            await navigator.clipboard.writeText(shareUrlInput.value);
-            copyUrlBtn.textContent = '✓ Copied!';
-            setTimeout(() => {
-                copyUrlBtn.textContent = 'Copy';
-            }, 2000);
-        } catch (error) {
-            // Fallback for older browsers
-            shareUrlInput.select();
-            document.execCommand('copy');
-            copyUrlBtn.textContent = '✓ Copied!';
-            setTimeout(() => {
-                copyUrlBtn.textContent = 'Copy';
-            }, 2000);
-        }
-    });
-
-    // Close share modal
-    closeShareBtn.addEventListener('click', () => {
-        shareModal.classList.add('hidden');
-    });
-
-    // Close modal on outside click
-    shareModal.addEventListener('click', (e) => {
-        if (e.target === shareModal) {
-            shareModal.classList.add('hidden');
-        }
     });
 
     // Drag and drop functionality
