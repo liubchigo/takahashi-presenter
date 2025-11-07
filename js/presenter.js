@@ -1,6 +1,6 @@
 // Main presentation controller
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Get DOM elements
     const slideContainer = document.getElementById('currentSlide');
     const progressFill = document.getElementById('progressFill');
@@ -21,8 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let startTime = Date.now();
     let timerInterval = null;
 
-    // Load content and settings
-    const content = StorageManager.getSlideContent();
+    // Check for URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const loadFile = urlParams.get('load');
+    
+    let content;
+    
+    // Load content from URL parameter or storage
+    if (loadFile) {
+        try {
+            const response = await fetch(`examples/${loadFile}.txt`);
+            if (!response.ok) {
+                throw new Error(`Failed to load file: ${loadFile}`);
+            }
+            content = await response.text();
+        } catch (error) {
+            console.error('Error loading file:', error);
+            alert(`Could not load presentation file: ${loadFile}\nRedirecting to editor...`);
+            window.location.href = 'index.html';
+            return;
+        }
+    } else {
+        content = StorageManager.getSlideContent();
+    }
+    
     let settings = StorageManager.getSettings() || { theme: 'dark', font: 'sans-serif', animations: true };
 
     // Parse slides and extract metadata
