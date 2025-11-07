@@ -27,7 +27,7 @@ Start Presentation
 
 Arrow keys
 Space bar
-Swipe gestures
+Tap left/right
 
 # Shortcuts
 

@@ -15,7 +15,7 @@ Created by Masayoshi Takahashi, this presentation style emphasizes:
 ✨ Simple text input format  
 🎨 Dark and light themes  
 ⌨️ Full keyboard navigation  
-📱 Mobile-friendly with touch support  
+📱 Mobile-friendly with tap navigation  
 💾 Auto-save to localStorage  
 🎯 Auto-scaling text to fit screen  
 🚀 No dependencies, pure vanilla JavaScript  
@@ -65,9 +65,9 @@ Your slides here
 
 **📖 See [INPUT-FORMAT.md](INPUT-FORMAT.md) for complete documentation and examples.**
 
-## Keyboard Shortcuts
+## Navigation Controls
 
-During presentation:
+### Keyboard Shortcuts
 
 - `→` `Space` `↓` - Next slide
 - `←` `↑` - Previous slide
@@ -78,6 +78,12 @@ During presentation:
 - `C` - Toggle slide counter
 - `?` - Show help
 - `Esc` - Exit presentation
+
+### Touch & Mouse Controls
+
+- **Tap left side** of screen - Previous slide
+- **Tap right side** of screen - Next slide  
+- **Tap center** - No action (safe zone for accidental touches)
 
 ## Browser Support
 

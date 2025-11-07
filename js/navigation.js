@@ -1,4 +1,4 @@
-// Handle keyboard navigation and controls
+// Handle keyboard, touch, and mouse navigation controls
 
 const NavigationController = {
     onNext: null,
@@ -34,17 +34,14 @@ const NavigationController = {
             this.handleKeyPress(e);
         });
 
-        // Touch/swipe support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
+        // Touch tap support for mobile (instead of swipe)
+        document.addEventListener('touchend', (e) => {
+            this.handleTap(e);
         });
 
-        document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe(touchStartX, touchEndX);
+        // Also handle mouse clicks for consistency
+        document.addEventListener('click', (e) => {
+            this.handleTap(e);
         });
     },
 
@@ -175,22 +172,53 @@ const NavigationController = {
     },
 
     /**
-     * Handle swipe gestures
-     * @param {number} startX - Touch start X position
-     * @param {number} endX - Touch end X position
+     * Handle tap gestures for mobile navigation
+     * @param {TouchEvent|MouseEvent} e - Touch or mouse event
      */
-    handleSwipe(startX, endX) {
-        const threshold = 50; // Minimum swipe distance
-        const diff = startX - endX;
-
-        if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
-                // Swipe left - next slide
-                if (this.onNext) this.onNext();
-            } else {
-                // Swipe right - previous slide
-                if (this.onPrevious) this.onPrevious();
-            }
+    handleTap(e) {
+        // Prevent handling if we're in a modal or overview mode
+        const helpModal = document.getElementById('helpModal');
+        const overviewMode = document.getElementById('overviewMode');
+        const exitModal = document.getElementById('exitModal');
+        
+        if ((helpModal && !helpModal.classList.contains('hidden')) ||
+            (overviewMode && !overviewMode.classList.contains('hidden')) ||
+            (exitModal && !exitModal.classList.contains('hidden'))) {
+            return;
         }
+
+        // Don't handle taps on control elements
+        if (e.target.closest('.controls') || 
+            e.target.closest('.btn') || 
+            e.target.closest('button') ||
+            e.target.closest('select') ||
+            e.target.closest('input')) {
+            return;
+        }
+
+        e.preventDefault();
+
+        // Get the tap/click position
+        let clientX;
+        if (e.type === 'touchend' && e.changedTouches && e.changedTouches[0]) {
+            clientX = e.changedTouches[0].clientX;
+        } else if (e.clientX !== undefined) {
+            clientX = e.clientX;
+        } else {
+            return;
+        }
+
+        const screenWidth = window.innerWidth;
+        const leftThird = screenWidth / 3;
+        const rightThird = screenWidth * 2 / 3;
+
+        if (clientX < leftThird) {
+            // Tap on left side - previous slide
+            if (this.onPrevious) this.onPrevious();
+        } else if (clientX > rightThird) {
+            // Tap on right side - next slide
+            if (this.onNext) this.onNext();
+        }
+        // Middle third does nothing (allows for accidental taps)
     }
 };
