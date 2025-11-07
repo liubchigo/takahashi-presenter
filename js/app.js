@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedSettings) {
         themeSelect.value = savedSettings.theme || 'dark';
         fontSelect.value = savedSettings.font || 'sans-serif';
-        animationToggle.checked = savedSettings.animations !== false; // Default to true
+        animationToggle.checked = savedSettings.animations === true; // Default to false
     }
 
     // Update theme preview

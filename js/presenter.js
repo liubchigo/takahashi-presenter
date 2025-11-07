@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         content = StorageManager.getSlideContent();
     }
     
-    let settings = StorageManager.getSettings() || { theme: 'dark', font: 'sans-serif', animations: true };
+    let settings = StorageManager.getSettings() || { theme: 'dark', font: 'sans-serif', animations: false };
 
     // Parse slides and extract metadata
     const slides = SlideParser.parse(content);
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Initialize renderer with animation setting
-    SlideRenderer.init(slides, slideContainer, settings.animations !== false);
+    SlideRenderer.init(slides, slideContainer, settings.animations === true);
     SlideRenderer.render(0);
 
     // Update UI
