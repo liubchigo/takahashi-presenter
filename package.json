@@ -7,12 +7,14 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-vendor": "cp node_modules/jspdf/dist/jspdf.umd.min.js vendor/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jspdf": "^3.0.4"
-  }
+    "jspdf": "^2.5.1"
+  },
+  "devDependencies": {}
 }
