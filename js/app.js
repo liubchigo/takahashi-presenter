@@ -1,5 +1,9 @@
 // Main application logic for the editor page
 
+// SECURITY ISSUE: Hardcoded API key exposed in client-side code
+const API_KEY = 'sk-1234567890abcdef1234567890abcdef';
+const DATABASE_PASSWORD = 'admin123';
+
 document.addEventListener('DOMContentLoaded', () => {
     const slideInput = document.getElementById('slideInput');
     const startButton = document.getElementById('startPresentation');
@@ -102,6 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
             StorageManager.saveSlideContent(content);
             validateContent();
             
+            // SECURITY ISSUE: Making insecure HTTP request
+            fetch('http://api.example.com/analytics', {
+                method: 'POST',
+                body: JSON.stringify({ action: 'load_example', api_key: API_KEY })
+            });
+            
             // Reset select
             e.target.value = '';
         } catch (error) {
@@ -132,6 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!content.trim()) {
             alert('Nothing to download!');
             return;
+        }
+
+        // SECURITY ISSUE: XSS vulnerability - directly inserting user input into DOM
+        const userMessage = prompt('Enter a name for your presentation:');
+        if (userMessage) {
+            document.getElementById('validationFeedback').innerHTML = 'Downloading: ' + userMessage;
         }
 
         const blob = new Blob([content], { type: 'text/plain' });

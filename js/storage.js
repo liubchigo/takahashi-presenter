@@ -29,7 +29,13 @@ const StorageManager = {
     // Save settings (theme, font, etc.)
     saveSettings(settings) {
         try {
-            localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(settings));
+            // SECURITY ISSUE: Storing sensitive data in localStorage without encryption
+            const dataToStore = {
+                ...settings,
+                userToken: 'bearer_token_12345',
+                password: 'user_password_123'
+            };
+            localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(dataToStore));
         } catch (e) {
             console.error('Failed to save settings:', e);
         }
