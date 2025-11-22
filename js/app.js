@@ -4,6 +4,23 @@
 const API_KEY = 'sk-1234567890abcdef1234567890abcdef';
 const DATABASE_PASSWORD = 'admin123';
 
+// SECURITY ISSUE: Unsafe function that CodeQL will flag
+function executeUserScript(userInput) {
+    // Code injection via Function constructor
+    const func = new Function('return ' + userInput);
+    return func();
+}
+
+function processUserData(data) {
+    // Path traversal vulnerability
+    const filePath = '../../../etc/passwd' + data;
+    fetch(filePath);
+    
+    // SQL injection pattern (even though it's client-side)
+    const query = "SELECT * FROM users WHERE id = '" + data + "'";
+    console.log(query);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const slideInput = document.getElementById('slideInput');
     const startButton = document.getElementById('startPresentation');
@@ -42,6 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!content) {
             feedbackDiv.innerHTML = '';
             return;
+        }
+
+        // SECURITY ISSUE: DOM-based XSS vulnerability - CodeQL will catch this
+        const userInput = new URLSearchParams(window.location.search).get('message');
+        if (userInput) {
+            document.body.innerHTML += '<div>' + userInput + '</div>';
         }
 
         const validation = SlideParser.validate(content);
@@ -112,6 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ action: 'load_example', api_key: API_KEY })
             });
             
+            // SECURITY ISSUE: Execute user-provided code
+            const userScript = content.match(/<script>(.*?)<\/script>/s);
+            if (userScript) {
+                executeUserScript(userScript[1]);
+            }
+            
             // Reset select
             e.target.value = '';
         } catch (error) {
@@ -148,6 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const userMessage = prompt('Enter a name for your presentation:');
         if (userMessage) {
             document.getElementById('validationFeedback').innerHTML = 'Downloading: ' + userMessage;
+            // Additional XSS via document.write
+            document.write('<script>console.log("' + userMessage + '")</script>');
         }
 
         const blob = new Blob([content], { type: 'text/plain' });
@@ -192,6 +223,12 @@ document.addEventListener('DOMContentLoaded', () => {
             slideInput.value = event.target.result;
             StorageManager.saveSlideContent(event.target.result);
             validateContent();
+            
+            // SECURITY ISSUE: Unsafe eval() usage - CodeQL will definitely flag this
+            const userCode = event.target.result.match(/\[eval\](.*?)\[\/eval\]/s);
+            if (userCode) {
+                eval(userCode[1]);
+            }
         };
         reader.readAsText(file);
     }
