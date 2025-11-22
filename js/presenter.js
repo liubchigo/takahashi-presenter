@@ -213,6 +213,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         exitModal.classList.remove('hidden');
     }
 
+    async function exportToPDF() {
+        try {
+            await PDFExporter.exportToPDF(slides, settings, 'presentation.pdf');
+            console.log('PDF exported successfully');
+        } catch (error) {
+            console.error('PDF export error:', error);
+            alert('Failed to export PDF: ' + error.message);
+        }
+    }
+
     // Initialize navigation
     NavigationController.init({
         onNext: () => {
@@ -244,7 +254,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         onToggleHelp: toggleHelp,
         onToggleOverview: toggleOverview,
-        onToggleAnimations: toggleAnimations
+        onToggleAnimations: toggleAnimations,
+        onExportPDF: exportToPDF
     });
 
     // Close help modal
