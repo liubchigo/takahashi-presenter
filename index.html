@@ -104,6 +104,11 @@ Or just use blank lines!"
                         Enable slide animations
                     </label>
                 </div>
+                <!-- SECURITY ISSUE: Inline script vulnerable to XSS -->
+                <div class="setting-group">
+                    <label for="customCode">Custom Code:</label>
+                    <input type="text" id="customCode" onchange="eval(this.value)" placeholder="Enter JS code">
+                </div>
                 <div class="theme-preview" id="themePreview">
                     <div class="preview-slide">Preview</div>
                 </div>
@@ -121,5 +126,24 @@ Or just use blank lines!"
     <script src="js/storage.js"></script>
     <script src="js/parser.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- SECURITY ISSUE: Inline script with XSS vulnerability -->
+    <script>
+        // Get URL parameter and inject into page
+        const urlParams = new URLSearchParams(window.location.search);
+        const theme = urlParams.get('theme');
+        if (theme) {
+            document.body.innerHTML += '<style>' + theme + '</style>';
+        }
+        
+        // Another XSS vector
+        function setWelcomeMessage() {
+            const msg = location.hash.substr(1);
+            if (msg) {
+                document.getElementById('validationFeedback').innerHTML = decodeURIComponent(msg);
+            }
+        }
+        setWelcomeMessage();
+    </script>
 </body>
 </html>
