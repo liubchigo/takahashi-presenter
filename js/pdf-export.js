@@ -8,7 +8,7 @@ const PDFExport = {
      */
     exportToPDF(slides, settings = {}) {
         if (!slides || slides.length === 0) {
-            alert('No slides to export!');
+            alert('No slides to export! Please create some slides first.');
             return;
         }
 
@@ -64,11 +64,17 @@ const PDFExport = {
             window.print();
             
             // Clean up after print dialog is closed
-            // Note: We can't reliably detect when print dialog closes,
-            // so we'll wait a bit and then remove
-            setTimeout(() => {
-                document.body.removeChild(printContainer);
-            }, 1000);
+            const cleanupContainer = () => {
+                if (document.body.contains(printContainer)) {
+                    document.body.removeChild(printContainer);
+                }
+            };
+            
+            // Use afterprint event for reliable cleanup
+            window.addEventListener('afterprint', cleanupContainer, { once: true });
+            
+            // Fallback timeout in case afterprint doesn't fire
+            setTimeout(cleanupContainer, 5000);
         }, 100);
     },
 
@@ -126,7 +132,7 @@ const PDFExport = {
         const slides = SlideParser.parse(content);
         
         if (slides.length === 0) {
-            alert('No valid slides found!');
+            alert('No valid slides found! Make sure slides are separated by blank lines or --- markers.');
             return;
         }
 
@@ -140,7 +146,7 @@ const PDFExport = {
     exportFromPresenter() {
         // Get slides from the renderer
         if (!SlideRenderer || !SlideRenderer.slides || SlideRenderer.slides.length === 0) {
-            alert('No slides to export!');
+            alert('No slides to export! Please create some slides first.');
             return;
         }
 

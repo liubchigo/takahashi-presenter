@@ -21,13 +21,6 @@
     display: none;
 }
 
-/* Show in print mode */
-@media print {
-    #pdf-export-container {
-        display: block;
-    }
-}
-
 /* PDF Slide Styles */
 .pdf-slide {
     page-break-after: always;
