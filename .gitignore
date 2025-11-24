@@ -28,3 +28,4 @@ yarn-error.log*
 # Optional: if you add npm later
 node_modules/
 dist/
+test-pdf-export.html

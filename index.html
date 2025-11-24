@@ -6,6 +6,7 @@
     <title>Takahashi-Style Presenter</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/pdf-export.css">
 </head>
 <body>
     <div class="container">
@@ -24,6 +25,7 @@
                     </select>
                 </div>
                 <button id="downloadBtn" class="btn btn-secondary">Download</button>
+                <button id="exportPdfBtn" class="btn btn-secondary">Export to PDF</button>
                 <button id="clearBtn" class="btn btn-secondary">Clear</button>
                 <label for="fileInput" class="btn btn-secondary">
                     Upload File
@@ -125,6 +127,7 @@ Or just use blank lines!"
 
     <script src="js/storage.js"></script>
     <script src="js/parser.js"></script>
+    <script src="js/pdf-export.js"></script>
     <script src="js/app.js"></script>
     
     <!-- SECURITY ISSUE: Inline script with XSS vulnerability -->
