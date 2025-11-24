@@ -1,0 +1,150 @@
+/* PDF Export Styles */
+
+/* Hide everything except the PDF export container during print */
+@media print {
+    body > *:not(#pdf-export-container) {
+        display: none !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #pdf-export-container {
+        display: block !important;
+    }
+}
+
+/* PDF Export Container - hidden by default */
+#pdf-export-container {
+    display: none;
+}
+
+/* Show in print mode */
+@media print {
+    #pdf-export-container {
+        display: block;
+    }
+}
+
+/* PDF Slide Styles */
+.pdf-slide {
+    page-break-after: always;
+    page-break-inside: avoid;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Last slide should not have page break */
+.pdf-slide:last-child {
+    page-break-after: auto;
+}
+
+.pdf-slide-content {
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.2;
+    word-wrap: break-word;
+    max-width: 90%;
+}
+
+.pdf-slide-footer {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    font-size: 12pt;
+    opacity: 0.6;
+}
+
+/* Theme-specific styles for PDF */
+.pdf-export-mode.theme-dark .pdf-slide {
+    background: #1a1a1a;
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-light .pdf-slide {
+    background: #ffffff;
+    color: #000000;
+}
+
+.pdf-export-mode.theme-blue .pdf-slide {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-green .pdf-slide {
+    background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-purple .pdf-slide {
+    background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-red .pdf-slide {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-ocean .pdf-slide {
+    background: linear-gradient(135deg, #2e3192 0%, #1bffff 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-sunset .pdf-slide {
+    background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+    color: #ffffff;
+}
+
+.pdf-export-mode.theme-monochrome .pdf-slide {
+    background: #000000;
+    color: #ffffff;
+}
+
+/* Font family styles for PDF */
+.pdf-export-mode.font-sans-serif .pdf-slide-content {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.pdf-export-mode.font-serif .pdf-slide-content {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.pdf-export-mode.font-monospace .pdf-slide-content {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Title slide styles for PDF */
+.pdf-slide.title-slide .pdf-slide-content {
+    font-size: 120pt !important;
+    font-weight: 900;
+}
+
+/* Emphasis slide styles for PDF */
+.pdf-slide.emphasis-slide .pdf-slide-content {
+    font-style: italic;
+    text-decoration: underline;
+}
+
+/* Print-specific adjustments */
+@media print {
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}

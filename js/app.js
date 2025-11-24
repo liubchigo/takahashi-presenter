@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exampleSelect = document.getElementById('exampleSelect');
     const clearBtn = document.getElementById('clearBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const exportPdfBtn = document.getElementById('exportPdfBtn');
     const fileInput = document.getElementById('fileInput');
     const themeSelect = document.getElementById('themeSelect');
     const fontSelect = document.getElementById('fontSelect');
@@ -188,6 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = 'presentation.txt';
         a.click();
         URL.revokeObjectURL(url);
+    });
+
+    // Export to PDF
+    exportPdfBtn.addEventListener('click', () => {
+        PDFExport.exportFromEditor();
     });
 
     // Drag and drop functionality

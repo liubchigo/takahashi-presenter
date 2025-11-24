@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/presenter.css">
     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/pdf-export.css">
 </head>
 <body class="presentation-mode">
     <div id="slideContainer" class="slide-container">
@@ -29,6 +30,7 @@
             <div id="timer" class="timer">0:00</div>
             <div id="slideCounter" class="slide-counter">1 / 1</div>
             <div id="percentage" class="percentage">0%</div>
+            <button id="exportPdfBtnPresenter" class="btn btn-small" style="margin-left: 1rem;">Export PDF</button>
         </div>
     </div>
 
@@ -51,6 +53,7 @@
                     <li><kbd>%</kbd> - Toggle percentage</li>
                     <li><kbd>H</kbd> - Hide/show all controls</li>
                     <li><kbd>R</kbd> - Reset timer</li>
+                    <li><kbd>E</kbd> - Export to PDF</li>
                     <li><kbd>?</kbd> - Show/hide this help</li>
                     <li><kbd>Esc</kbd> - Exit presentation / Close modal</li>
                 </ul>
@@ -82,6 +85,7 @@
     <script src="js/parser.js"></script>
     <script src="js/renderer.js"></script>
     <script src="js/navigation.js"></script>
+    <script src="js/pdf-export.js"></script>
     <script src="js/presenter.js"></script>
 </body>
 </html>

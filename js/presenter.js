@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const exitModal = document.getElementById('exitModal');
     const confirmExitBtn = document.getElementById('confirmExit');
     const cancelExitBtn = document.getElementById('cancelExit');
+    const exportPdfBtnPresenter = document.getElementById('exportPdfBtnPresenter');
 
     // Timer state
     let startTime = Date.now();
@@ -244,7 +245,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         onToggleHelp: toggleHelp,
         onToggleOverview: toggleOverview,
-        onToggleAnimations: toggleAnimations
+        onToggleAnimations: toggleAnimations,
+        onExportPDF: () => {
+            PDFExport.exportFromPresenter();
+        }
     });
 
     // Close help modal
@@ -264,6 +268,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     cancelExitBtn.addEventListener('click', () => {
         exitModal.classList.add('hidden');
+    });
+
+    // Export to PDF button handler
+    exportPdfBtnPresenter.addEventListener('click', () => {
+        PDFExport.exportFromPresenter();
     });
 
     // Initial UI update
