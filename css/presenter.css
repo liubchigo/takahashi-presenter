@@ -46,6 +46,63 @@
     transform: scale(1.1);
 }
 
+/* Image slide styling */
+.slide.image-slide {
+    padding: 0;
+    font-size: initial;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-image-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 90vw;
+    max-height: 85vh;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
+.slide-image-loading {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3vh;
+    font-weight: normal;
+    text-align: center;
+}
+
+.slide-image-error {
+    color: #ef4444;
+    font-size: 3vh;
+    font-weight: normal;
+    text-align: center;
+}
+
+.slide-caption {
+    position: absolute;
+    bottom: 5vh;
+    width: 100%;
+    text-align: center;
+    font-size: 3vh;
+    font-weight: 600;
+    opacity: 0.9;
+    padding: 0 2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;

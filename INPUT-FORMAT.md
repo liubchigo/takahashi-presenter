@@ -154,6 +154,113 @@ Simple
 # Thank You
 ```
 
+## Images
+
+You can add images to your presentation using the `@image:` syntax:
+
+```
+@image: https://example.com/photo.jpg
+Optional caption text
+
+@image: https://example.com/another.jpg
+
+Regular text slide
+```
+
+### Image Syntax
+
+#### Basic Image (No Caption)
+```
+@image: https://example.com/image.jpg
+
+Next slide
+```
+
+#### Image with Caption
+```
+@image: https://example.com/image.jpg
+Beautiful sunset
+
+Next slide
+```
+
+### Image Guidelines
+
+- **One image per slide**: Each `@image:` declaration creates a new slide
+- **URL-based**: Images must be hosted online (HTTP/HTTPS URLs)
+- **Caption**: Optional single line of text after the image URL
+- **Separation**: Blank line after the image (or caption) starts a new slide
+
+### Supported Image Sources
+
+✅ **Recommended Sources:**
+- Public image hosting (Imgur, Cloudinary, etc.)
+- Cloud storage with public links (Google Drive, Dropbox)
+- Content delivery networks (CDN)
+- Direct image URLs from websites
+
+✅ **URL Formats:**
+- `https://example.com/image.jpg`
+- `http://example.com/image.png`
+- Relative paths: `./images/photo.jpg`
+
+### Image Display
+
+- Images are displayed **full-screen** (90% viewport width, 85% viewport height)
+- Images maintain their **aspect ratio** (no cropping)
+- Images are **centered** on the slide
+- Captions appear at the **bottom** in a readable size
+- Works with **all themes**
+
+### Example: Photo Presentation
+
+```
+---
+theme: ocean
+---
+
+# Summer 2025
+
+@image: https://picsum.photos/1920/1080?random=1
+Adventure begins
+
+@image: https://picsum.photos/1920/1080?random=2
+Stunning views
+
+@image: https://picsum.photos/1920/1080?random=3
+Memories made
+
+# The End
+```
+
+### Best Practices
+
+✅ **Do's:**
+- Use high-resolution images (minimum 1920x1080)
+- Keep captions short (1-5 words)
+- Test images load before presenting
+- Use reliable image hosting services
+- Ensure images are publicly accessible
+
+❌ **Don'ts:**
+- Don't use very large files (>5MB) - they slow loading
+- Don't use images requiring authentication
+- Don't add multiple lines in captions
+- Don't mix text and images on the same slide
+
+### Troubleshooting
+
+**Image not loading?**
+- Check the URL is correct and public
+- Ensure CORS is enabled on the image host
+- Try opening the URL in a browser
+- Check your internet connection
+
+**Caption not showing?**
+- Make sure caption is on the line immediately after `@image:`
+- Caption must be a single line
+- Blank line after caption starts new slide
+
 ## Best Practices
 
 ### ✅ Do's
