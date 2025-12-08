@@ -105,6 +105,24 @@ const SlideParser = {
             metadata: { ...globalMetadata }
         };
 
+        // Check for image indicator (@image:)
+        const imageRegex = /^@image:\s*(.+?)(?:\n(.+))?$/s;
+        const imageMatch = text.match(imageRegex);
+        
+        if (imageMatch) {
+            slide.isImage = true;
+            slide.imageUrl = imageMatch[1].trim();
+            slide.caption = imageMatch[2] ? imageMatch[2].trim() : '';
+            slide.content = slide.caption || '[Image]';
+            
+            // Validate URL
+            if (!this.isValidImageUrl(slide.imageUrl)) {
+                console.warn(`Slide ${index + 1}: Image URL may be invalid: ${slide.imageUrl}`);
+            }
+            
+            return slide;
+        }
+
         // Check for title indicator (#)
         if (text.startsWith('#')) {
             slide.isTitle = true;
@@ -120,6 +138,31 @@ const SlideParser = {
         }
 
         return slide;
+    },
+
+    /**
+     * Validate if a string is a valid image URL
+     * @param {string} url - URL to validate
+     * @returns {boolean} True if valid
+     */
+    isValidImageUrl(url) {
+        // Check for absolute URL
+        if (url.startsWith('http://') || url.startsWith('https://')) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+        
+        // Check for relative path
+        if (url.startsWith('./') || url.startsWith('../') || url.startsWith('/')) {
+            return true;
+        }
+        
+        // Simple path without protocol
+        return url.length > 0 && !url.includes(' ');
     },
 
     /**

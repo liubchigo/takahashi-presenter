@@ -14,6 +14,7 @@ Created by Masayoshi Takahashi, this presentation style emphasizes:
 
 ✨ Simple text input format  
 🎨 Dark and light themes  
+🖼️ Image support with captions  
 ⌨️ Full keyboard navigation  
 📱 Mobile-friendly with tap navigation  
 💾 Auto-save to localStorage  
@@ -50,6 +51,7 @@ Better
 You can also use:
 - `---` as slide separators
 - `#` prefix for title slides
+- `@image:` for image slides with optional captions
 - Metadata block for theme/font settings
 
 ```
@@ -61,6 +63,9 @@ font: sans-serif
 # Welcome
 
 Your slides here
+
+@image: https://example.com/photo.jpg
+Photo caption
 ```
 
 **📖 See [INPUT-FORMAT.md](INPUT-FORMAT.md) for complete documentation and examples.**

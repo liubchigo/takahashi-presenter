@@ -29,25 +29,34 @@ const SlideRenderer = {
         }
 
         const slide = this.slides[index];
-        this.container.textContent = slide.content;
         this.currentSlide = index;
 
-        // Apply special styling for title slides
-        if (slide.isTitle) {
-            this.container.classList.add('title-slide');
-        } else {
-            this.container.classList.remove('title-slide');
-        }
+        // Clear container
+        this.container.innerHTML = '';
+        
+        // Remove all special classes
+        this.container.classList.remove('title-slide', 'emphasis-slide', 'image-slide');
 
-        // Apply emphasis styling
-        if (slide.isEmphasis) {
-            this.container.classList.add('emphasis-slide');
+        // Handle image slides
+        if (slide.isImage) {
+            this.renderImageSlide(slide);
         } else {
-            this.container.classList.remove('emphasis-slide');
-        }
+            // Regular text slide
+            this.container.textContent = slide.content;
 
-        // Auto-scale text based on content length
-        this.autoScale();
+            // Apply special styling for title slides
+            if (slide.isTitle) {
+                this.container.classList.add('title-slide');
+            }
+
+            // Apply emphasis styling
+            if (slide.isEmphasis) {
+                this.container.classList.add('emphasis-slide');
+            }
+
+            // Auto-scale text based on content length
+            this.autoScale();
+        }
 
         // Trigger animation by removing and re-adding animation class
         if (this.animationsEnabled) {
@@ -58,6 +67,59 @@ const SlideRenderer = {
         } else {
             this.container.style.animation = 'none';
         }
+    },
+
+    /**
+     * Render an image slide
+     * @param {Object} slide - Slide object with image data
+     */
+    renderImageSlide(slide) {
+        this.container.classList.add('image-slide');
+        
+        // Create image wrapper
+        const imageWrapper = document.createElement('div');
+        imageWrapper.className = 'slide-image-wrapper';
+        
+        // Create image element
+        const img = document.createElement('img');
+        img.className = 'slide-image';
+        img.alt = slide.caption || 'Presentation image';
+        
+        // Create loading placeholder
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'slide-image-loading';
+        loadingDiv.textContent = 'Loading image...';
+        imageWrapper.appendChild(loadingDiv);
+        
+        // Handle image load
+        img.onload = () => {
+            loadingDiv.style.display = 'none';
+            img.style.display = 'block';
+        };
+        
+        // Handle image error
+        img.onerror = () => {
+            loadingDiv.textContent = '⚠️ Image failed to load';
+            loadingDiv.className = 'slide-image-error';
+            console.error(`Failed to load image: ${slide.imageUrl}`);
+        };
+        
+        img.src = slide.imageUrl;
+        img.style.display = 'none'; // Hide until loaded
+        imageWrapper.appendChild(img);
+        
+        this.container.appendChild(imageWrapper);
+        
+        // Add caption if present
+        if (slide.caption) {
+            const caption = document.createElement('div');
+            caption.className = 'slide-caption';
+            caption.textContent = slide.caption;
+            this.container.appendChild(caption);
+        }
+        
+        // Don't auto-scale for image slides
+        this.container.style.fontSize = '';
     },
 
     /**
