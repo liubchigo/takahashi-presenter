@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearBtn = document.getElementById('clearBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const fileInput = document.getElementById('fileInput');
+    const presenterInput = document.getElementById('presenterInput');
     const themeSelect = document.getElementById('themeSelect');
     const fontSelect = document.getElementById('fontSelect');
     const animationToggle = document.getElementById('animationToggle');
@@ -29,6 +30,50 @@ document.addEventListener('DOMContentLoaded', () => {
         StorageManager.saveSlideContent(slideInput.value);
         validateContent();
     });
+
+    // Auto-save presenter name
+    presenterInput.addEventListener('input', () => {
+        updateMetadataInContent();
+    });
+
+    // Update metadata in content
+    function updateMetadataInContent() {
+        const content = slideInput.value;
+        const presenterName = presenterInput.value.trim();
+        const metadata = SlideParser.getMetadata(content);
+        
+        // Check if content already has metadata block
+        const hasMetadata = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+        
+        if (hasMetadata) {
+            // Update existing metadata
+            const metadataMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+            const existingMetadata = metadataMatch[1];
+            const bodyContent = content.replace(/^---\s*\n([\s\S]*?)\n---\s*\n/, '');
+            
+            // Remove existing presenter line if any
+            let metadataLines = existingMetadata.split('\n').filter(line => !line.trim().startsWith('presenter:'));
+            
+            // Add presenter line if name is provided
+            if (presenterName) {
+                metadataLines.unshift(`presenter: ${presenterName}`);
+            }
+            
+            // Reconstruct content
+            if (metadataLines.length > 0 || presenterName) {
+                const newMetadata = metadataLines.join('\n');
+                slideInput.value = `---\n${newMetadata}\n---\n\n${bodyContent}`;
+            } else {
+                slideInput.value = bodyContent;
+            }
+        } else if (presenterName) {
+            // Add new metadata block with presenter name
+            slideInput.value = `---\npresenter: ${presenterName}\n---\n\n${content}`;
+        }
+        
+        StorageManager.saveSlideContent(slideInput.value);
+        validateContent();
+    }
 
     // Validate content and show feedback
     function validateContent() {
@@ -76,6 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial validation
     if (slideInput.value.trim()) {
         validateContent();
+        // Load presenter name from metadata if exists
+        const metadata = SlideParser.getMetadata(slideInput.value);
+        if (metadata.presenter) {
+            presenterInput.value = metadata.presenter;
+        }
     }
 
     // Load example presentation
@@ -102,6 +152,14 @@ document.addEventListener('DOMContentLoaded', () => {
             StorageManager.saveSlideContent(content);
             validateContent();
             
+            // Load presenter name from example if exists
+            const metadata = SlideParser.getMetadata(content);
+            if (metadata.presenter) {
+                presenterInput.value = metadata.presenter;
+            } else {
+                presenterInput.value = '';
+            }
+            
             // Reset select
             e.target.value = '';
         } catch (error) {
@@ -114,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearBtn.addEventListener('click', () => {
         if (confirm('Clear all content?')) {
             slideInput.value = '';
+            presenterInput.value = '';
             StorageManager.saveSlideContent('');
         }
     });
@@ -176,6 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
             slideInput.value = event.target.result;
             StorageManager.saveSlideContent(event.target.result);
             validateContent();
+            
+            // Load presenter name from file if exists
+            const metadata = SlideParser.getMetadata(event.target.result);
+            if (metadata.presenter) {
+                presenterInput.value = metadata.presenter;
+            } else {
+                presenterInput.value = '';
+            }
         };
         reader.readAsText(file);
     }

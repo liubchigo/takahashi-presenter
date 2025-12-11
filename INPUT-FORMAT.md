@@ -87,6 +87,7 @@ You can include a metadata block at the very beginning of your presentation to s
 
 ```
 ---
+presenter: Your Name
 theme: dark
 font: sans-serif
 ---
@@ -98,12 +99,14 @@ Second Slide
 
 ### Available Metadata Options
 
+- `presenter`: Your name to display at the top of the screen during presentation
 - `theme`: `dark` or `light`
 - `font`: `sans-serif`, `serif`, or `monospace`
 
 Example:
 ```
 ---
+presenter: John Doe
 theme: light
 font: serif
 ---
@@ -121,6 +124,7 @@ Here's a complete presentation with all features:
 
 ```
 ---
+presenter: Your Name
 theme: dark
 font: sans-serif
 ---
