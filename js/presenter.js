@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const timerElement = document.getElementById('timer');
     const percentageElement = document.getElementById('percentage');
     const controlsElement = document.getElementById('controls');
+    const presenterNameElement = document.getElementById('presenterName');
     const helpModal = document.getElementById('helpModal');
     const closeHelpBtn = document.getElementById('closeHelp');
     const overviewMode = document.getElementById('overviewMode');
@@ -62,6 +63,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Apply theme and font
     document.body.classList.add(`theme-${settings.theme}`);
     document.body.classList.add(`font-${settings.font}`);
+
+    // Display presenter name if available
+    if (metadata.presenter) {
+        presenterNameElement.textContent = metadata.presenter;
+    }
 
     if (slides.length === 0) {
         alert('No slides found! Redirecting to editor...');
