@@ -40,16 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateMetadataInContent() {
         const content = slideInput.value;
         const presenterName = presenterInput.value.trim();
-        const metadata = SlideParser.getMetadata(content);
         
         // Check if content already has metadata block
-        const hasMetadata = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+        const metadataRegex = /^---\s*\n([\s\S]*?)\n---\s*\n/;
+        const hasMetadata = content.match(metadataRegex);
         
         if (hasMetadata) {
             // Update existing metadata
-            const metadataMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
-            const existingMetadata = metadataMatch[1];
-            const bodyContent = content.replace(/^---\s*\n([\s\S]*?)\n---\s*\n/, '');
+            const existingMetadata = hasMetadata[1];
+            const bodyContent = content.replace(metadataRegex, '');
             
             // Remove existing presenter line if any
             let metadataLines = existingMetadata.split('\n').filter(line => !line.trim().startsWith('presenter:'));
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Reconstruct content
-            if (metadataLines.length > 0 || presenterName) {
+            if (metadataLines.length > 0) {
                 const newMetadata = metadataLines.join('\n');
                 slideInput.value = `---\n${newMetadata}\n---\n\n${bodyContent}`;
             } else {

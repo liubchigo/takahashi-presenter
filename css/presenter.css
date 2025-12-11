@@ -21,16 +21,18 @@
     border-radius: 2rem;
     backdrop-filter: blur(10px);
     z-index: 10;
+    visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, visibility 0.3s;
     pointer-events: none;
 }
 
 .presenter-name:not(:empty) {
+    visibility: visible;
     opacity: 1;
 }
 
-.presentation-mode:hover .presenter-name {
+.presentation-mode:hover .presenter-name:not(:empty) {
     opacity: 0.9;
 }
 
