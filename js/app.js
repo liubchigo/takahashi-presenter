@@ -53,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove existing presenter line if any
             let metadataLines = existingMetadata.split('\n').filter(line => !line.trim().startsWith('presenter:'));
             
-            // Add presenter line if name is provided
+            // Add presenter line at the beginning if name is provided
+            // This keeps presenter metadata first for better readability
             if (presenterName) {
                 metadataLines.unshift(`presenter: ${presenterName}`);
             }
