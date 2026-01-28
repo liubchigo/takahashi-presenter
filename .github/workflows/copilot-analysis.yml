@@ -49,6 +49,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Create label if it doesn't exist
+          gh label create "copilot-analysis" --description "Analysis from Copilot CLI" --color "0E8A16" || true
+          
           # Create issue with analysis results
           gh issue create \
             --title "🔍 Copilot Codebase Analysis - $(date +%Y-%m-%d)" \
