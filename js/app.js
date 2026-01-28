@@ -1,5 +1,12 @@
 // Main application logic for the editor page
 
+// Utility function to escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const slideInput = document.getElementById('slideInput');
     const startButton = document.getElementById('startPresentation');
@@ -51,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (validation.warnings.length > 0) {
                 const warningsHtml = validation.warnings
-                    .map(w => `<li>${w}</li>`)
+                    .map(w => `<li>${escapeHtml(w)}</li>`)
                     .join('');
                 feedbackDiv.innerHTML += `
                     <div class="feedback-warning">
@@ -62,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             const errorsHtml = validation.errors
-                .map(e => `<li>${e}</li>`)
+                .map(e => `<li>${escapeHtml(e)}</li>`)
                 .join('');
             feedbackDiv.innerHTML = `
                 <div class="feedback-error">
