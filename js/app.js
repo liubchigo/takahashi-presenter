@@ -42,34 +42,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const validation = SlideParser.validate(content);
         
+        // Clear previous feedback
+        feedbackDiv.textContent = '';
+        
         if (validation.isValid) {
-            feedbackDiv.innerHTML = `
-                <div class="feedback-success">
-                    ✓ ${validation.slideCount} slide${validation.slideCount !== 1 ? 's' : ''} detected
-                </div>
-            `;
+            const successDiv = document.createElement('div');
+            successDiv.className = 'feedback-success';
+            successDiv.textContent = `✓ ${validation.slideCount} slide${validation.slideCount !== 1 ? 's' : ''} detected`;
+            feedbackDiv.appendChild(successDiv);
             
             if (validation.warnings.length > 0) {
-                const warningsHtml = validation.warnings
-                    .map(w => `<li>${w}</li>`)
-                    .join('');
-                feedbackDiv.innerHTML += `
-                    <div class="feedback-warning">
-                        <strong>⚠ Warnings:</strong>
-                        <ul>${warningsHtml}</ul>
-                    </div>
-                `;
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'feedback-warning';
+                
+                const strong = document.createElement('strong');
+                strong.textContent = '⚠ Warnings:';
+                warningDiv.appendChild(strong);
+                
+                const ul = document.createElement('ul');
+                validation.warnings.forEach(w => {
+                    const li = document.createElement('li');
+                    li.textContent = w;
+                    ul.appendChild(li);
+                });
+                warningDiv.appendChild(ul);
+                feedbackDiv.appendChild(warningDiv);
             }
         } else {
-            const errorsHtml = validation.errors
-                .map(e => `<li>${e}</li>`)
-                .join('');
-            feedbackDiv.innerHTML = `
-                <div class="feedback-error">
-                    <strong>✗ Errors:</strong>
-                    <ul>${errorsHtml}</ul>
-                </div>
-            `;
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'feedback-error';
+            
+            const strong = document.createElement('strong');
+            strong.textContent = '✗ Errors:';
+            errorDiv.appendChild(strong);
+            
+            const ul = document.createElement('ul');
+            validation.errors.forEach(e => {
+                const li = document.createElement('li');
+                li.textContent = e;
+                ul.appendChild(li);
+            });
+            errorDiv.appendChild(ul);
+            feedbackDiv.appendChild(errorDiv);
         }
     }
 
