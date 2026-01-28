@@ -14,6 +14,14 @@ on:
           - security
           - documentation
           - testing
+      assign_copilot:
+        description: 'Assign Copilot to work on the created issue'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 permissions:
   contents: read
@@ -41,9 +49,23 @@ jobs:
           echo "🚀 Starting Copilot CLI analysis..."
           
           # Run copilot and save output
-          copilot -p "Analyze this codebase and suggest improvements." > analysis.md
+          copilot -p "Analyze this codebase and suggest the top 3 improvements. For each improvement, provide:
+          1. Title
+          2. Description of the current state
+          3. Proposed improvement
+          4. Impact assessment
+          
+          Rank them by priority, with the most important first." > analysis.md
           
           echo "✅ Analysis complete!"
+      
+      - name: Extract Top Improvement
+        run: |
+          # Extract just the first/top improvement for the issue
+          # This will take approximately the first improvement section
+          head -n 30 analysis.md > top-improvement.md
+          
+          echo "✅ Top improvement extracted!"
       
       - name: Create GitHub Issue with Results
         env:
@@ -52,13 +74,32 @@ jobs:
           # Create label if it doesn't exist
           gh label create "copilot-analysis" --description "Analysis from Copilot CLI" --color "0E8A16" || true
           
-          # Create issue with analysis results
-          gh issue create \
-            --title "🔍 Copilot Codebase Analysis - $(date +%Y-%m-%d)" \
-            --body-file analysis.md \
-            --label "copilot-analysis"
+          # Create issue with TOP improvement only and capture the issue number
+          ISSUE_URL=$(gh issue create \
+            --title "🔍 Top Priority Improvement - $(date +%Y-%m-%d)" \
+            --body-file top-improvement.md \
+            --label "copilot-analysis")
           
-          echo "✅ Issue created with analysis results!"
+          # Extract issue number from URL
+          ISSUE_NUMBER=$(echo $ISSUE_URL | grep -oE '[0-9]+$')
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          
+          echo "✅ Issue #$ISSUE_NUMBER created with top improvement!"
+      
+      - name: Assign Copilot to Work on Issue
+        if: github.event.inputs.assign_copilot != 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Assign Copilot coding agent to the issue
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/issues/${{ env.ISSUE_NUMBER }}/agent-assignments \
+            -f agent_type='copilot'
+          
+          echo "✅ Copilot assigned to issue #${{ env.ISSUE_NUMBER }}!"
       
       - name: Create Analysis Summary
         run: |
