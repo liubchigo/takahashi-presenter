@@ -29,15 +29,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Load content from URL parameter or storage
     if (loadFile) {
+        // Sanitize the filename to prevent path traversal attacks
+        // Only allow alphanumeric characters, hyphens, and underscores
+        const sanitizedFile = loadFile.replace(/[^a-zA-Z0-9_-]/g, '');
+        
+        if (sanitizedFile !== loadFile) {
+            console.error('Invalid filename:', loadFile);
+            alert('Invalid file name. Only letters, numbers, hyphens, and underscores are allowed.\nRedirecting to editor...');
+            window.location.href = 'index.html';
+            return;
+        }
+        
         try {
-            const response = await fetch(`examples/${loadFile}.txt`);
+            const response = await fetch(`examples/${sanitizedFile}.txt`);
             if (!response.ok) {
-                throw new Error(`Failed to load file: ${loadFile}`);
+                throw new Error(`Failed to load file: ${sanitizedFile}`);
             }
             content = await response.text();
         } catch (error) {
             console.error('Error loading file:', error);
-            alert(`Could not load presentation file: ${loadFile}\nRedirecting to editor...`);
+            alert(`Could not load presentation file: ${sanitizedFile}\nRedirecting to editor...`);
             window.location.href = 'index.html';
             return;
         }
