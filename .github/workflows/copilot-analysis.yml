@@ -81,7 +81,7 @@ jobs:
       - name: Assign Copilot to Work on Issue
         if: github.event.inputs.assign_copilot != 'false'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
         run: |
           # Assign Copilot coding agent using REST API
           gh api \
