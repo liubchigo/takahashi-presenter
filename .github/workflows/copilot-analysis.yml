@@ -49,23 +49,15 @@ jobs:
           echo "🚀 Starting Copilot CLI analysis..."
           
           # Run copilot and save output
-          copilot -p "Analyze this codebase and suggest the top 3 improvements. For each improvement, provide:
+          copilot -p "Analyze this codebase and suggest only the top 1 most important improvement. Provide:
           1. Title
           2. Description of the current state
           3. Proposed improvement
           4. Impact assessment
           
-          Rank them by priority, with the most important first." > analysis.md
+          Only one suggestion - the highest priority improvement." > analysis.md
           
           echo "✅ Analysis complete!"
-      
-      - name: Extract Top Improvement
-        run: |
-          # Extract just the first/top improvement for the issue
-          # This will take approximately the first improvement section
-          head -n 30 analysis.md > top-improvement.md
-          
-          echo "✅ Top improvement extracted!"
       
       - name: Create GitHub Issue with Results
         env:
@@ -77,7 +69,7 @@ jobs:
           # Create issue with TOP improvement only and capture the issue number
           ISSUE_URL=$(gh issue create \
             --title "🔍 Top Priority Improvement - $(date +%Y-%m-%d)" \
-            --body-file top-improvement.md \
+            --body-file analysis.md \
             --label "copilot-analysis")
           
           # Extract issue number from URL
