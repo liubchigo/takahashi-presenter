@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Only allow alphanumeric characters, hyphens, and underscores
         const sanitizedFile = loadFile.replace(/[^a-zA-Z0-9_-]/g, '');
         
-        if (sanitizedFile !== loadFile) {
+        // Ensure the sanitized filename is not empty
+        if (!sanitizedFile || sanitizedFile !== loadFile) {
             console.error('Invalid filename:', loadFile);
             alert('Invalid file name. Only letters, numbers, hyphens, and underscores are allowed.\nRedirecting to editor...');
             window.location.href = 'index.html';
