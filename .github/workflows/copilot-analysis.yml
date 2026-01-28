@@ -1,0 +1,70 @@
+name: Copilot Codebase Analysis
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      analysis_type:
+        description: 'Type of analysis to perform'
+        required: false
+        default: 'code-quality'
+        type: choice
+        options:
+          - code-quality
+          - security
+          - documentation
+          - testing
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  copilot-analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install GitHub Copilot CLI
+        run: |
+          curl -fsSL https://gh.io/copilot-install | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Run Copilot Analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        run: |
+          echo "🚀 Starting Copilot CLI analysis..."
+          
+          # Run copilot and save output
+          copilot -p "Analyze this codebase and suggest improvements." > analysis.md
+          
+          echo "✅ Analysis complete!"
+      
+      - name: Create GitHub Issue with Results
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Create issue with analysis results
+          gh issue create \
+            --title "🔍 Copilot Codebase Analysis - $(date +%Y-%m-%d)" \
+            --body-file analysis.md \
+            --label "copilot-analysis"
+          
+          echo "✅ Issue created with analysis results!"
+      
+      - name: Create Analysis Summary
+        run: |
+          echo "## 🔍 Copilot Analysis Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A new issue has been created with the detailed analysis results." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View issues: [${{ github.repository }}/issues](/${{ github.repository }}/issues?q=is%3Aissue+label%3Acopilot-analysis)" >> $GITHUB_STEP_SUMMARY
