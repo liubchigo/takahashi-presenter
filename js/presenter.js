@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load content from URL parameter or storage
     if (loadFile) {
         // Sanitize the filename to prevent path traversal attacks
-        // Only allow alphanumeric characters, hyphens, and underscores
-        const sanitizedFile = loadFile.replace(/[^a-zA-Z0-9_-]/g, '');
+        // Only allow alphanumeric characters, hyphens, underscores, and dots
+        const sanitizedFile = loadFile.replace(/[^a-zA-Z0-9_.-]/g, '');
         
-        // Ensure the sanitized filename is not empty
-        if (!sanitizedFile || sanitizedFile !== loadFile) {
+        // Ensure the sanitized filename is not empty and doesn't contain path traversal sequences
+        if (!sanitizedFile || sanitizedFile !== loadFile || sanitizedFile.includes('..') || sanitizedFile.startsWith('.')) {
             console.error('Invalid filename:', loadFile);
-            alert('Invalid file name. Only letters, numbers, hyphens, and underscores are allowed.\nRedirecting to editor...');
+            alert('Invalid file name. Only letters, numbers, hyphens, underscores, and dots are allowed.\nPath traversal attempts are not permitted.\nRedirecting to editor...');
             window.location.href = 'index.html';
             return;
         }
