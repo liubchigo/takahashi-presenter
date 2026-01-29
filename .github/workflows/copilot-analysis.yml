@@ -60,9 +60,9 @@ jobs:
           fi
           
           # Use Copilot CLI with GitHub MCP to analyze, create issue, and optionally assign agent
-          copilot --allow-tool 'github' -p "Analyze this codebase at ${{ github.repository }} and identify the top 1 most important improvement.
+          copilot --allow-all-tools -p "Analyze this codebase at ${{ github.repository }} and identify the top 1 most important improvement.
           
-          Then create a GitHub issue in ${{ github.repository }} with:
+          Then use the GitHub MCP server tools to create a GitHub issue in ${{ github.repository }} with:
           - Title: '🔍 Top Priority Improvement - $(date +%Y-%m-%d)'
           - Body containing:
             1. Description of the current state
