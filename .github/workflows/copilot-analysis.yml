@@ -42,65 +42,39 @@ jobs:
           curl -fsSL https://gh.io/copilot-install | bash
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       
-      - name: Run Copilot Analysis
+      - name: Create Issue and Assign Copilot via MCP
         env:
           GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
         run: |
           echo "🚀 Starting Copilot CLI analysis..."
           
-          # Run copilot and save output
-          copilot -p "Analyze this codebase and suggest only the top 1 most important improvement. Provide:
-          1. Title
-          2. Description of the current state
-          3. Proposed improvement
-          4. Impact assessment
-          
-          Only one suggestion - the highest priority improvement." > analysis.md
-          
-          echo "✅ Analysis complete!"
-      
-      - name: Create GitHub Issue with Results
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
           # Create label if it doesn't exist
           gh label create "copilot-analysis" --description "Analysis from Copilot CLI" --color "0E8A16" || true
           
-          # Create issue with TOP improvement only and capture the issue number
-          ISSUE_URL=$(gh issue create \
-            --title "🔍 Top Priority Improvement - $(date +%Y-%m-%d)" \
-            --body-file analysis.md \
-            --label "copilot-analysis")
+          # Determine if we should assign the coding agent
+          ASSIGN_AGENT="${{ github.event.inputs.assign_copilot }}"
+          if [ "$ASSIGN_AGENT" != "false" ]; then
+            AGENT_INSTRUCTION="After creating the issue, assign the coding agent to work on it using base branch '${{ github.ref_name }}'."
+          else
+            AGENT_INSTRUCTION=""
+          fi
           
-          # Extract issue number from URL
-          ISSUE_NUMBER=$(echo $ISSUE_URL | grep -oE '[0-9]+$')
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> $GITHUB_ENV
+          # Use Copilot CLI with GitHub MCP to analyze, create issue, and optionally assign agent
+          copilot --allow-tool 'github' -p "Analyze this codebase at ${{ github.repository }} and identify the top 1 most important improvement.
           
-          echo "✅ Issue #$ISSUE_NUMBER created with top improvement!"
-      
-      - name: Assign Copilot to Work on Issue
-        if: github.event.inputs.assign_copilot != 'false'
-        env:
-          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
-        run: |
-          # Assign Copilot coding agent using REST API
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/issues/${{ env.ISSUE_NUMBER }}/assignees \
-            --input - <<< '{
-            "assignees": ["copilot-swe-agent[bot]"],
-            "agent_assignment": {
-              "target_repo": "${{ github.repository }}",
-              "base_branch": "${{ github.ref_name }}",
-              "custom_instructions": "",
-              "custom_agent": "",
-              "model": ""
-            }
-          }'
+          Then create a GitHub issue in ${{ github.repository }} with:
+          - Title: '🔍 Top Priority Improvement - $(date +%Y-%m-%d)'
+          - Body containing:
+            1. Description of the current state
+            2. Proposed improvement
+            3. Impact assessment
+          - Label: copilot-analysis
           
-          echo "✅ Copilot coding agent assigned to issue #${{ env.ISSUE_NUMBER }}!"
+          $AGENT_INSTRUCTION
+          
+          Report back the issue number that was created."
+          
+          echo "✅ Issue created and processed via GitHub MCP!"
       
       - name: Create Analysis Summary
         run: |
