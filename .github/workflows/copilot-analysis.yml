@@ -44,6 +44,10 @@ jobs:
           # Create label if it doesn't exist
           gh label create "copilot-analysis" --description "Analysis from Copilot CLI" --color "0E8A16" || true
           
+          # List available MCP tools to see what's actually available
+          echo "📋 Checking available GitHub MCP tools..."
+          copilot -p "List all available tools from the GitHub MCP server. For each tool, show its name and a brief description." --allow-all-tools || true
+          
           # Use Copilot CLI with GitHub MCP to analyze, create issue, and assign coding agent
           copilot --allow-all-tools -p "Analyze this codebase at ${{ github.repository }} and identify the top 1 most important improvement.
           
