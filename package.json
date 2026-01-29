@@ -1,0 +1,12 @@
+{
+  "name": "takahashi-presenter",
+  "version": "1.0.0",
+  "description": "A simple Takahashi-style presentation tool",
+  "scripts": {
+    "test": "node --test tests/",
+    "test:watch": "node --test --watch tests/"
+  },
+  "keywords": ["presentation", "takahashi", "slides"],
+  "author": "",
+  "license": "MIT"
+}
