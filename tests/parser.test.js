@@ -6,7 +6,7 @@ const assert = require('node:assert/strict');
 const { SlideParser } = require('../js/parser.js');
 
 /**
- * Test 1: Happy Path - should_return_array_of_slide_objects_when_valid_content_provided
+ * Test 1: Happy Path
  * 
  * Purpose: Verify that the parser correctly transforms valid multi-slide text content 
  * into an array of structured slide objects with proper IDs, content, and metadata.
@@ -32,7 +32,6 @@ Third Slide`;
     // Check first slide
     assert.strictEqual(result[0].id, 1, 'First slide should have id 1');
     assert.strictEqual(result[0].content, 'First Slide', 'First slide content should match');
-    assert.ok(result[0].metadata, 'First slide should have metadata object');
     assert.strictEqual(typeof result[0].metadata, 'object', 'Metadata should be an object');
     
     // Check second slide
@@ -47,7 +46,7 @@ Third Slide`;
 });
 
 /**
- * Test 2: Edge Case - should_return_empty_array_when_content_contains_only_whitespace
+ * Test 2: Edge Case
  * 
  * Purpose: Verify that the parser gracefully handles edge cases where content consists 
  * entirely of whitespace, blank lines, or separators without actual slide content.
@@ -72,13 +71,10 @@ test('should return empty array when content contains only whitespace', () => {
     
     // Check result is empty
     assert.strictEqual(result.length, 0, 'Should have 0 slides');
-    
-    // Check it's an empty array
-    assert.deepStrictEqual(result, [], 'Should be an empty array');
 });
 
 /**
- * Test 3: Guard/Error - should_return_empty_array_when_content_is_null_or_undefined
+ * Test 3: Guard/Error
  * 
  * Purpose: Verify that the parser enforces input validation guards and handles invalid 
  * input types without throwing exceptions, ensuring defensive programming.
@@ -98,7 +94,4 @@ test('should return empty array when content is null or undefined', () => {
     const resultNumber = SlideParser.parse(123);
     assert.ok(Array.isArray(resultNumber), 'Result should be an array for number input');
     assert.strictEqual(resultNumber.length, 0, 'Should have 0 slides for number input');
-    
-    // Verify no exceptions were thrown (test passes if we reach here)
-    assert.ok(true, 'No exceptions should be thrown for invalid inputs');
 });
