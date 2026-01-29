@@ -14,14 +14,6 @@ on:
           - security
           - documentation
           - testing
-      assign_copilot:
-        description: 'Assign Copilot to work on the created issue'
-        required: false
-        default: 'true'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
 
 permissions:
   contents: read
@@ -52,28 +44,26 @@ jobs:
           # Create label if it doesn't exist
           gh label create "copilot-analysis" --description "Analysis from Copilot CLI" --color "0E8A16" || true
           
-          # Determine if we should assign the coding agent
-          ASSIGN_AGENT="${{ github.event.inputs.assign_copilot }}"
-          if [ "$ASSIGN_AGENT" != "false" ]; then
-            AGENT_INSTRUCTION="After creating the issue, assign the coding agent to work on it using base branch '${{ github.ref_name }}'."
-          else
-            AGENT_INSTRUCTION=""
-          fi
-          
-          # Use Copilot CLI with GitHub MCP to analyze, create issue, and optionally assign agent
+          # Use Copilot CLI with GitHub MCP to analyze, create issue, and assign coding agent
           copilot --allow-all-tools -p "Analyze this codebase at ${{ github.repository }} and identify the top 1 most important improvement.
           
-          Then use the GitHub MCP server tools to create a GitHub issue in ${{ github.repository }} with:
+          Then call the GitHub MCP tool 'issue_write' with method='create' to create a GitHub issue in ${{ github.repository }} with:
+          - owner: liubchigo
+          - repo: takahashi-presenter
           - Title: '🔍 Top Priority Improvement - $(date +%Y-%m-%d)'
           - Body containing:
             1. Description of the current state
             2. Proposed improvement
             3. Impact assessment
-          - Label: copilot-analysis
+          - labels: ['copilot-analysis']
           
-          $AGENT_INSTRUCTION
+          After creating the issue, call the GitHub MCP tool 'assign_copilot_to_issue' with these parameters:
+          - owner: liubchigo
+          - repo: takahashi-presenter
+          - issue_number: (the issue number you just created)
+          - base_ref: ${{ github.ref_name }}
           
-          Report back the issue number that was created."
+          Report back the issue number that was created and confirm the coding agent was assigned."
           
           echo "✅ Issue created and processed via GitHub MCP!"
       
