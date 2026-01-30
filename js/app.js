@@ -1,26 +1,5 @@
 // Main application logic for the editor page
 
-// SECURITY ISSUE: Hardcoded API key exposed in client-side code
-const API_KEY = 'sk-1234567890abcdef1234567890abcdef';
-const DATABASE_PASSWORD = 'admin123';
-
-// SECURITY ISSUE: Unsafe function that CodeQL will flag
-function executeUserScript(userInput) {
-    // Code injection via Function constructor
-    const func = new Function('return ' + userInput);
-    return func();
-}
-
-function processUserData(data) {
-    // Path traversal vulnerability
-    const filePath = '../../../etc/passwd' + data;
-    fetch(filePath);
-    
-    // SQL injection pattern (even though it's client-side)
-    const query = "SELECT * FROM users WHERE id = '" + data + "'";
-    console.log(query);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const slideInput = document.getElementById('slideInput');
     const startButton = document.getElementById('startPresentation');
@@ -57,46 +36,54 @@ document.addEventListener('DOMContentLoaded', () => {
         const feedbackDiv = document.getElementById('validationFeedback');
         
         if (!content) {
-            feedbackDiv.innerHTML = '';
+            feedbackDiv.textContent = '';
             return;
-        }
-
-        // SECURITY ISSUE: DOM-based XSS vulnerability - CodeQL will catch this
-        const userInput = new URLSearchParams(window.location.search).get('message');
-        if (userInput) {
-            document.body.innerHTML += '<div>' + userInput + '</div>';
         }
 
         const validation = SlideParser.validate(content);
         
+        // Clear previous feedback
+        feedbackDiv.textContent = '';
+        
         if (validation.isValid) {
-            feedbackDiv.innerHTML = `
-                <div class="feedback-success">
-                    ✓ ${validation.slideCount} slide${validation.slideCount !== 1 ? 's' : ''} detected
-                </div>
-            `;
+            const successDiv = document.createElement('div');
+            successDiv.className = 'feedback-success';
+            successDiv.textContent = `✓ ${validation.slideCount} slide${validation.slideCount !== 1 ? 's' : ''} detected`;
+            feedbackDiv.appendChild(successDiv);
             
             if (validation.warnings.length > 0) {
-                const warningsHtml = validation.warnings
-                    .map(w => `<li>${w}</li>`)
-                    .join('');
-                feedbackDiv.innerHTML += `
-                    <div class="feedback-warning">
-                        <strong>⚠ Warnings:</strong>
-                        <ul>${warningsHtml}</ul>
-                    </div>
-                `;
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'feedback-warning';
+                
+                const strong = document.createElement('strong');
+                strong.textContent = '⚠ Warnings:';
+                warningDiv.appendChild(strong);
+                
+                const ul = document.createElement('ul');
+                validation.warnings.forEach(w => {
+                    const li = document.createElement('li');
+                    li.textContent = w;
+                    ul.appendChild(li);
+                });
+                warningDiv.appendChild(ul);
+                feedbackDiv.appendChild(warningDiv);
             }
         } else {
-            const errorsHtml = validation.errors
-                .map(e => `<li>${e}</li>`)
-                .join('');
-            feedbackDiv.innerHTML = `
-                <div class="feedback-error">
-                    <strong>✗ Errors:</strong>
-                    <ul>${errorsHtml}</ul>
-                </div>
-            `;
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'feedback-error';
+            
+            const strong = document.createElement('strong');
+            strong.textContent = '✗ Errors:';
+            errorDiv.appendChild(strong);
+            
+            const ul = document.createElement('ul');
+            validation.errors.forEach(e => {
+                const li = document.createElement('li');
+                li.textContent = e;
+                ul.appendChild(li);
+            });
+            errorDiv.appendChild(ul);
+            feedbackDiv.appendChild(errorDiv);
         }
     }
 
@@ -129,18 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
             StorageManager.saveSlideContent(content);
             validateContent();
             
-            // SECURITY ISSUE: Making insecure HTTP request
-            fetch('http://api.example.com/analytics', {
-                method: 'POST',
-                body: JSON.stringify({ action: 'load_example', api_key: API_KEY })
-            });
-            
-            // SECURITY ISSUE: Execute user-provided code
-            const userScript = content.match(/<script>(.*?)<\/script>/s);
-            if (userScript) {
-                executeUserScript(userScript[1]);
-            }
-            
             // Reset select
             e.target.value = '';
         } catch (error) {
@@ -171,14 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!content.trim()) {
             alert('Nothing to download!');
             return;
-        }
-
-        // SECURITY ISSUE: XSS vulnerability - directly inserting user input into DOM
-        const userMessage = prompt('Enter a name for your presentation:');
-        if (userMessage) {
-            document.getElementById('validationFeedback').innerHTML = 'Downloading: ' + userMessage;
-            // Additional XSS via document.write
-            document.write('<script>console.log("' + userMessage + '")</script>');
         }
 
         const blob = new Blob([content], { type: 'text/plain' });
@@ -223,12 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             slideInput.value = event.target.result;
             StorageManager.saveSlideContent(event.target.result);
             validateContent();
-            
-            // SECURITY ISSUE: Unsafe eval() usage - CodeQL will definitely flag this
-            const userCode = event.target.result.match(/\[eval\](.*?)\[\/eval\]/s);
-            if (userCode) {
-                eval(userCode[1]);
-            }
         };
         reader.readAsText(file);
     }
