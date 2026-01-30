@@ -182,3 +182,8 @@ const SlideParser = {
         return metadata;
     }
 };
+
+// Export for Node.js/Jest testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = SlideParser;
+}
