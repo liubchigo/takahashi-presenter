@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create simple, impactful presentations using the Takahashi Method - large text, few words, maximum impact">
     <title>Takahashi-Style Presenter</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
 <body>
     <div class="container">
@@ -14,26 +16,28 @@
             <p class="tagline">Simple. Bold. Impactful.</p>
         </header>
 
-        <main class="editor-section">
+        <main class="editor-section" role="main">
             <div class="editor-controls">
                 <div class="example-selector">
                     <label for="exampleSelect">Load Example:</label>
-                    <select id="exampleSelect">
+                    <select id="exampleSelect" aria-label="Select an example presentation to load">
                         <option value="">-- Choose an example --</option>
                         <option value="liuba-story">Liuba Story</option>
                     </select>
                 </div>
-                <button id="downloadBtn" class="btn btn-secondary">Download</button>
-                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+                <button id="downloadBtn" class="btn btn-secondary" aria-label="Download presentation as text file">Download</button>
+                <button id="clearBtn" class="btn btn-secondary" aria-label="Clear all presentation content">Clear</button>
                 <label for="fileInput" class="btn btn-secondary">
                     Upload File
-                    <input type="file" id="fileInput" accept=".txt,.md" hidden>
+                    <input type="file" id="fileInput" accept=".txt,.md" hidden aria-label="Upload presentation file">
                 </label>
             </div>
 
-            <div id="dropZone" class="drop-zone">
+            <div id="dropZone" class="drop-zone" role="region" aria-label="Text editor with drag and drop support">
                 <textarea 
                     id="slideInput" 
+                    aria-label="Presentation content editor"
+                    aria-describedby="validationFeedback"
                     placeholder="Enter your presentation here...
 
 Example with metadata:
@@ -65,20 +69,20 @@ You can also use --- to separate slides.
 Or just use blank lines!"
                     rows="20"
                 ></textarea>
-                <div class="drop-overlay hidden" id="dropOverlay">
+                <div class="drop-overlay hidden" id="dropOverlay" aria-hidden="true">
                     <div class="drop-message">
                         📁 Drop your file here
                     </div>
                 </div>
             </div>
 
-            <div id="validationFeedback" class="validation-feedback"></div>
+            <div id="validationFeedback" class="validation-feedback" role="status" aria-live="polite"></div>
 
             <div class="settings">
                 <h3>Settings</h3>
                 <div class="setting-group">
                     <label for="themeSelect">Theme:</label>
-                    <select id="themeSelect">
+                    <select id="themeSelect" aria-label="Select presentation theme">
                         <option value="dark">Dark</option>
                         <option value="light">Light</option>
                         <option value="blue">Blue Gradient</option>
@@ -92,7 +96,7 @@ Or just use blank lines!"
                 </div>
                 <div class="setting-group">
                     <label for="fontSelect">Font:</label>
-                    <select id="fontSelect">
+                    <select id="fontSelect" aria-label="Select presentation font">
                         <option value="sans-serif">Sans Serif</option>
                         <option value="serif">Serif</option>
                         <option value="monospace">Monospace</option>
@@ -100,16 +104,16 @@ Or just use blank lines!"
                 </div>
                 <div class="setting-group">
                     <label for="animationToggle">
-                        <input type="checkbox" id="animationToggle">
+                        <input type="checkbox" id="animationToggle" aria-label="Enable or disable slide animations">
                         Enable slide animations
                     </label>
                 </div>
-                <div class="theme-preview" id="themePreview">
+                <div class="theme-preview" id="themePreview" aria-label="Theme preview" role="img">
                     <div class="preview-slide">Preview</div>
                 </div>
             </div>
 
-            <button id="startPresentation" class="btn btn-primary">Start Presentation</button>
+            <button id="startPresentation" class="btn btn-primary" aria-label="Start presentation with current content">Start Presentation</button>
         </main>
 
         <footer>

@@ -1,0 +1,183 @@
+/* Accessibility Enhancements for Takahashi Presenter */
+
+/* Focus indicators for keyboard navigation */
+*:focus {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}
+
+/* High contrast focus for buttons */
+button:focus-visible,
+.btn:focus-visible,
+select:focus-visible,
+input[type="checkbox"]:focus-visible,
+input[type="file"]:focus-visible,
+a:focus-visible {
+    outline: 3px solid #4A90E2;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 5px rgba(74, 144, 226, 0.2);
+}
+
+/* Enhanced focus for modal close buttons */
+.modal button:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* Overview slide focus indicator */
+.overview-slide:focus-visible {
+    outline: 3px solid #4A90E2;
+    outline-offset: -3px;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+}
+
+/* Textarea focus enhancement */
+textarea:focus-visible {
+    outline: 3px solid #4A90E2;
+    outline-offset: 0;
+    border-color: #4A90E2;
+}
+
+/* Skip to main content link (for future enhancement) */
+.skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-to-main:focus {
+    top: 0;
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Ensure sufficient color contrast for interactive elements */
+.btn,
+button {
+    min-height: 44px; /* WCAG 2.5.5 Target Size */
+    min-width: 44px;
+}
+
+/* Ensure modal backdrop is announced to screen readers */
+.modal:not(.hidden)::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+}
+
+/* Ensure modals are above backdrop */
+.modal-content {
+    position: relative;
+    z-index: 999;
+}
+
+/* Improve keyboard navigation for overview grid */
+.overview-grid:focus-within {
+    border: 2px solid #4A90E2;
+}
+
+/* Add hover AND focus states for interactive elements */
+.overview-slide:hover,
+.overview-slide:focus {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Ensure controls have clear hover and focus states */
+.controls button:hover,
+.controls button:focus-visible {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Prefers reduced motion - respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .overview-slide:hover,
+    .overview-slide:focus {
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    *:focus-visible {
+        outline-width: 4px;
+        outline-offset: 4px;
+    }
+    
+    .btn,
+    button {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Dark mode preferences */
+@media (prefers-color-scheme: dark) {
+    *:focus-visible {
+        outline-color: #6AB0FF;
+    }
+}
+
+/* Ensure proper focus order for modal content */
+.modal[aria-modal="true"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Make sure hidden elements are truly hidden from assistive tech */
+.hidden,
+[aria-hidden="true"] {
+    display: none !important;
+}
+
+/* Exception for visual-only hidden (like drop overlay) */
+.drop-overlay[aria-hidden="true"] {
+    display: block !important;
+    pointer-events: none;
+}
+
+.drop-overlay[aria-hidden="true"].hidden {
+    display: none !important;
+}

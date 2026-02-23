@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const progress = (info.current / info.total) * 100;
         progressFill.style.width = `${progress}%`;
         
+        // Update ARIA attributes for progress bar
+        const progressBar = document.querySelector('.progress-bar');
+        progressBar.setAttribute('aria-valuenow', Math.round(progress));
+        
         // Update slide counter
         slideCounter.textContent = `${info.current} / ${info.total}`;
         
@@ -161,15 +165,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function toggleHelp() {
+        const isHidden = helpModal.classList.contains('hidden');
         helpModal.classList.toggle('hidden');
+        
+        if (isHidden) {
+            // Modal is being opened - manage focus
+            trapFocusInModal(helpModal, closeHelpBtn);
+        } else {
+            // Modal is being closed - restore focus to slide container
+            slideContainer.focus();
+        }
     }
 
     function toggleOverview() {
+        const isHidden = overviewMode.classList.contains('hidden');
         overviewMode.classList.toggle('hidden');
         
-        if (!overviewMode.classList.contains('hidden')) {
+        if (isHidden) {
             // Build overview grid
             buildOverviewGrid();
+            // Manage focus
+            trapFocusInModal(overviewMode, closeOverviewBtn);
+        } else {
+            // Restore focus to slide container
+            slideContainer.focus();
         }
     }
 
@@ -185,13 +204,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         slides.forEach((slide, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.className = 'overview-slide';
+            slideDiv.setAttribute('role', 'listitem');
+            slideDiv.setAttribute('tabindex', '0');
+            slideDiv.setAttribute('aria-label', `Slide ${index + 1}: ${slide.content.substring(0, 50)}${slide.content.length > 50 ? '...' : ''}`);
+            
             if (index === SlideRenderer.currentSlide) {
                 slideDiv.classList.add('active');
+                slideDiv.setAttribute('aria-current', 'true');
             }
             
             const number = document.createElement('div');
             number.className = 'overview-slide-number';
             number.textContent = index + 1;
+            number.setAttribute('aria-hidden', 'true');
             
             const content = document.createElement('div');
             content.textContent = slide.content.substring(0, 50) + (slide.content.length > 50 ? '...' : '');
@@ -199,10 +224,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             slideDiv.appendChild(number);
             slideDiv.appendChild(content);
             
-            slideDiv.addEventListener('click', () => {
+            const goToSlide = () => {
                 SlideRenderer.render(index);
                 updateUI();
                 toggleOverview();
+            };
+            
+            slideDiv.addEventListener('click', goToSlide);
+            slideDiv.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    goToSlide();
+                }
             });
             
             overviewGrid.appendChild(slideDiv);
@@ -211,6 +244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function exitPresentation() {
         exitModal.classList.remove('hidden');
+        trapFocusInModal(exitModal, confirmExitBtn);
     }
 
     // Initialize navigation
@@ -250,11 +284,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Close help modal
     closeHelpBtn.addEventListener('click', () => {
         helpModal.classList.add('hidden');
+        slideContainer.focus();
     });
 
     // Close overview mode
     closeOverviewBtn.addEventListener('click', () => {
         overviewMode.classList.add('hidden');
+        slideContainer.focus();
     });
 
     // Exit modal handlers
@@ -264,7 +300,51 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     cancelExitBtn.addEventListener('click', () => {
         exitModal.classList.add('hidden');
+        slideContainer.focus();
     });
+
+    // Focus trap utility for modal accessibility
+    function trapFocusInModal(modalElement, firstFocusElement) {
+        // Get all focusable elements within the modal
+        const focusableElements = modalElement.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        if (focusableElements.length === 0) return;
+        
+        const firstElement = firstFocusElement || focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        // Focus the first element
+        firstElement.focus();
+        
+        // Handle Tab key to trap focus
+        const handleTabKey = (e) => {
+            if (e.key !== 'Tab') return;
+            
+            if (e.shiftKey) {
+                // Shift + Tab
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                // Tab
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        };
+        
+        // Add event listener
+        modalElement.addEventListener('keydown', handleTabKey);
+        
+        // Store cleanup function
+        modalElement._removeFocusTrap = () => {
+            modalElement.removeEventListener('keydown', handleTabKey);
+        };
+    }
 
     // Initial UI update
     updateUI();

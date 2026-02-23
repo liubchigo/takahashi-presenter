@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Takahashi-style presentation viewer with keyboard and screen reader support">
     <title>Presentation</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/presenter.css">
     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
 <body class="presentation-mode">
-    <div id="slideContainer" class="slide-container">
-        <div id="currentSlide" class="slide"></div>
+    <div id="slideContainer" class="slide-container" role="main" aria-label="Presentation slides">
+        <div id="currentSlide" class="slide" role="region" aria-live="polite" aria-atomic="true" tabindex="0"></div>
     </div>
 
-    <div id="overviewMode" class="overview-mode hidden">
+    <div id="overviewMode" class="overview-mode hidden" role="dialog" aria-labelledby="overviewModalTitle" aria-modal="true">
         <div class="overview-header">
-            <h2>Slide Overview</h2>
-            <button id="closeOverview" class="btn btn-small">Close (Esc)</button>
+            <h2 id="overviewModalTitle">Slide Overview</h2>
+            <button id="closeOverview" class="btn btn-small" aria-label="Close overview and return to presentation">Close (Esc)</button>
         </div>
-        <div id="overviewGrid" class="overview-grid"></div>
+        <div id="overviewGrid" class="overview-grid" role="list" aria-label="List of all slides"></div>
     </div>
 
-    <div id="controls" class="controls">
-        <div class="progress-bar">
+    <div id="controls" class="controls" role="complementary" aria-label="Presentation controls">
+        <div class="progress-bar" role="progressbar" aria-label="Presentation progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div id="progressFill" class="progress-fill"></div>
         </div>
         <div class="controls-row">
-            <div id="timer" class="timer">0:00</div>
-            <div id="slideCounter" class="slide-counter">1 / 1</div>
-            <div id="percentage" class="percentage">0%</div>
+            <div id="timer" class="timer" role="timer" aria-live="off" aria-label="Elapsed time">0:00</div>
+            <div id="slideCounter" class="slide-counter" role="status" aria-live="polite" aria-label="Current slide number">1 / 1</div>
+            <div id="percentage" class="percentage" role="status" aria-live="off" aria-label="Presentation progress percentage">0%</div>
         </div>
     </div>
 
-    <div id="helpModal" class="modal hidden">
+    <div id="helpModal" class="modal hidden" role="dialog" aria-labelledby="helpModalTitle" aria-modal="true">
         <div class="modal-content">
-            <h2>Keyboard & Touch Controls</h2>
+            <h2 id="helpModalTitle">Keyboard & Touch Controls</h2>
             <div style="margin-bottom: 1.5rem;">
                 <h3>Keyboard Shortcuts:</h3>
                 <ul>
@@ -63,17 +65,17 @@
                     <li>Tap center - No action (safe zone)</li>
                 </ul>
             </div>
-            <button id="closeHelp" class="btn">Close</button>
+            <button id="closeHelp" class="btn" aria-label="Close help dialog">Close</button>
         </div>
     </div>
 
-    <div id="exitModal" class="modal hidden">
+    <div id="exitModal" class="modal hidden" role="dialog" aria-labelledby="exitModalTitle" aria-modal="true">
         <div class="modal-content">
-            <h2>Exit Presentation?</h2>
+            <h2 id="exitModalTitle">Exit Presentation?</h2>
             <p style="margin: 1.5rem 0;">Are you sure you want to exit the presentation?</p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
-                <button id="confirmExit" class="btn">Exit</button>
-                <button id="cancelExit" class="btn">Cancel</button>
+                <button id="confirmExit" class="btn" aria-label="Confirm exit presentation">Exit</button>
+                <button id="cancelExit" class="btn" aria-label="Cancel and return to presentation">Cancel</button>
             </div>
         </div>
     </div>

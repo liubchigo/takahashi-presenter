@@ -15,6 +15,7 @@ Created by Masayoshi Takahashi, this presentation style emphasizes:
 ✨ Simple text input format  
 🎨 Dark and light themes  
 ⌨️ Full keyboard navigation  
+♿ **WCAG 2.1 AA accessible** with screen reader support  
 📱 Mobile-friendly with tap navigation  
 💾 Auto-save to localStorage  
 🎯 Auto-scaling text to fit screen  
@@ -84,6 +85,18 @@ Your slides here
 - **Tap left side** of screen - Previous slide
 - **Tap right side** of screen - Next slide  
 - **Tap center** - No action (safe zone for accidental touches)
+
+## Accessibility
+
+This presenter is designed to be **fully accessible** and meets WCAG 2.1 Level AA standards:
+
+- ♿ **Complete keyboard navigation** - no mouse required
+- 🔊 **Screen reader support** with ARIA labels and live regions
+- 🎯 **Focus management** in modals and dialogs
+- 👁️ **High contrast mode** and reduced motion support
+- 📏 **Minimum touch targets** (44x44px) for better usability
+
+**📖 See [ACCESSIBILITY.md](ACCESSIBILITY.md) for complete accessibility documentation.**
 
 ## Browser Support
 
