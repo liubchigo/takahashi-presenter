@@ -1,0 +1,56 @@
+name: Copilot Codebase Analysis
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      analysis_type:
+        description: 'Type of analysis to perform'
+        required: false
+        default: 'code-quality'
+        type: choice
+        options:
+          - code-quality
+          - security
+          - documentation
+          - testing
+
+permissions:
+  contents: write
+
+jobs:
+  copilot-analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install GitHub Copilot CLI
+        run: |
+          curl -fsSL https://gh.io/copilot-install | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Analyze and Improve Codebase
+        env:
+          GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        run: |
+          echo "🚀 Starting Copilot CLI analysis..."
+          
+          # Use Copilot CLI with /delegate to analyze and improve the codebase
+          copilot --allow-all-tools -p "/delegate Analyze the codebase at ${{ github.repository }} and identify the top 1 most important improvement. Then implement that improvement on branch ${{ github.ref_name }}."
+          
+          echo "✅ Analysis and coding complete!"
+      
+      - name: Create Summary
+        run: |
+          echo "## 🔍 Copilot Analysis Complete ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Copilot has analyzed the codebase and implemented improvements directly." >> $GITHUB_STEP_SUMMARY
