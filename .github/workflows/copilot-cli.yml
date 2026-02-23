@@ -41,7 +41,7 @@ jobs:
           echo "🚀 Starting Copilot CLI analysis..."
           
           # Use Copilot CLI with /delegate to analyze and improve the codebase
-          copilot --allow-all-tools -p "/delegate Analyze the codebase at ${{ github.repository }} and identify the top 1 most important improvement. Then implement that improvement on branch ${{ github.ref_name }}."
+          copilot --allow-all-tools -p "/delegate Analyze the codebase at ${{ github.repository }} and identify the top 1 most important improvement. Then implement that improvement."
           
           echo "✅ Analysis and coding complete!"
       
