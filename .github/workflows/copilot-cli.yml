@@ -17,6 +17,8 @@ on:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   copilot-analysis:
@@ -40,10 +42,24 @@ jobs:
         run: |
           echo "🚀 Starting Copilot CLI analysis..."
           
-          # Use Copilot CLI with /delegate to analyze and improve the codebase
-          copilot --allow-all-tools -p "/delegate Analyze the codebase at ${{ github.repository }} and identify the top 1 most important improvement. Then implement that improvement."
+          # Use Copilot CLI to analyze codebase and trigger coding agent via MCP
+          copilot --allow-all-tools -p "Analyze the codebase at ${{ github.repository }} and identify the top 1 most important improvement.
           
-          echo "✅ Analysis and coding complete!"
+          Then use GitHub MCP tools to:
+          1. Call 'issue_write' with method='create' to create an issue in liubchigo/takahashi-presenter with:
+             - title: '🚀 Automated Improvement - $(date +%Y-%m-%d)'
+             - body: Description of the improvement and its impact
+             - labels: ['copilot-analysis', 'enhancement']
+          
+          2. Call 'assign_copilot_to_issue' with:
+             - owner: liubchigo
+             - repo: takahashi-presenter
+             - issue_number: (from step 1)
+             - base_ref: ${{ github.ref_name }}
+          
+          Report the issue number and confirm the coding agent was assigned."
+          
+          echo "✅ Analysis complete, coding agent assigned to issue!"
       
       - name: Create Summary
         run: |
@@ -53,4 +69,4 @@ jobs:
           echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Copilot has analyzed the codebase and implemented improvements directly." >> $GITHUB_STEP_SUMMARY
+          echo "Copilot has analyzed the codebase, created an issue, and assigned the coding agent to implement improvements." >> $GITHUB_STEP_SUMMARY
