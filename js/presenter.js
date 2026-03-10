@@ -244,7 +244,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         onToggleHelp: toggleHelp,
         onToggleOverview: toggleOverview,
-        onToggleAnimations: toggleAnimations
+        onToggleAnimations: toggleAnimations,
+        onExportPdf: () => {
+            PDFExport.export(content, settings);
+        }
     });
 
     // Close help modal

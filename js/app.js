@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exampleSelect = document.getElementById('exampleSelect');
     const clearBtn = document.getElementById('clearBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const exportPdfBtn = document.getElementById('exportPdfBtn');
     const fileInput = document.getElementById('fileInput');
     const themeSelect = document.getElementById('themeSelect');
     const fontSelect = document.getElementById('fontSelect');
@@ -141,6 +142,21 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = 'presentation.txt';
         a.click();
         URL.revokeObjectURL(url);
+    });
+
+    // Export to PDF
+    exportPdfBtn.addEventListener('click', () => {
+        const content = slideInput.value.trim();
+        if (!content) {
+            alert('Nothing to export!');
+            return;
+        }
+
+        const settings = {
+            theme: themeSelect.value,
+            font: fontSelect.value
+        };
+        PDFExport.export(content, settings);
     });
 
     // Drag and drop functionality
