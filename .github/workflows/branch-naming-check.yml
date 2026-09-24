@@ -1,0 +1,29 @@
+name: Branch naming check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  branch-name:
+    name: Branch naming convention
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate branch name
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          echo "Checking branch: $BRANCH_NAME"
+
+          PATTERN='^[A-Za-z0-9._-]+/ZTID[-_][0-9]+([-_][A-Za-z0-9._-]+)?$'
+
+          if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
+            echo "❌ Branch name does not follow the convention."
+            echo "Expected example: feature/ZTID-123-description"
+            exit 1
+          fi
+
+          echo "✅ Branch name follows the convention."
