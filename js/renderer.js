@@ -149,3 +149,7 @@ const SlideRenderer = {
         return this.animationsEnabled;
     }
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = SlideRenderer;
+}

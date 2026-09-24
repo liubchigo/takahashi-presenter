@@ -222,3 +222,7 @@ const NavigationController = {
         // Middle third does nothing (allows for accidental taps)
     }
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = NavigationController;
+}

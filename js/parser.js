@@ -182,3 +182,7 @@ const SlideParser = {
         return metadata;
     }
 };
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = SlideParser;
+}
