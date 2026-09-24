@@ -1,0 +1,26 @@
+---
+theme: ocean
+---
+
+# Summer 2025
+
+@image: https://picsum.photos/1920/1080?random=1
+Adventure begins
+
+@image: https://picsum.photos/1920/1080?random=2
+Stunning views
+
+@image: https://picsum.photos/1920/1080?random=3
+Beautiful moments
+
+@image: https://picsum.photos/1920/1080?random=4
+Unforgettable
+
+@image: https://picsum.photos/1920/1080?random=5
+
+# Memories
+
+Made
+Together
+
+# Thank You

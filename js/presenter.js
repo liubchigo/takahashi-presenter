@@ -193,11 +193,33 @@ document.addEventListener('DOMContentLoaded', async () => {
             number.className = 'overview-slide-number';
             number.textContent = index + 1;
             
-            const content = document.createElement('div');
-            content.textContent = slide.content.substring(0, 50) + (slide.content.length > 50 ? '...' : '');
+            if (slide.isImage) {
+                // Image slide preview
+                slideDiv.classList.add('image-slide-preview');
+                
+                const img = document.createElement('img');
+                img.src = slide.imageUrl;
+                img.alt = slide.caption || 'Image slide';
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'cover';
+                
+                slideDiv.appendChild(img);
+                
+                if (slide.caption) {
+                    const caption = document.createElement('div');
+                    caption.className = 'overview-slide-caption';
+                    caption.textContent = slide.caption;
+                    slideDiv.appendChild(caption);
+                }
+            } else {
+                // Text slide preview
+                const content = document.createElement('div');
+                content.textContent = slide.content.substring(0, 50) + (slide.content.length > 50 ? '...' : '');
+                slideDiv.appendChild(content);
+            }
             
             slideDiv.appendChild(number);
-            slideDiv.appendChild(content);
             
             slideDiv.addEventListener('click', () => {
                 SlideRenderer.render(index);

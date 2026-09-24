@@ -1,0 +1,10 @@
+---
+theme: dark
+---
+
+# Dark Theme
+
+@image: test-images/test1.svg
+Dark theme test
+
+# Works Great
