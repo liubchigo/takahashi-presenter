@@ -8,7 +8,7 @@ on:
 
 jobs:
   branch-name:
-    name: Branch naming convention test
+    name: Branch naming convention
     runs-on: ubuntu-latest
 
     steps:
