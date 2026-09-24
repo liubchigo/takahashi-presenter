@@ -8,8 +8,8 @@ on:
 
 jobs:
   branch-name:
-    name: Branch naming convention test
-    runs-on: ubuntu-latest
+    name: Branch naming convention invalid 
+    runs-on: ubuntu-latest 
 
     steps:
       - name: Validate branch name
