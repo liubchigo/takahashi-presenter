@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exampleSelect = document.getElementById('exampleSelect');
     const clearBtn = document.getElementById('clearBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const exportPdfBtn = document.getElementById('exportPdfBtn');
     const fileInput = document.getElementById('fileInput');
     const themeSelect = document.getElementById('themeSelect');
     const fontSelect = document.getElementById('fontSelect');
@@ -141,6 +142,50 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = 'presentation.txt';
         a.click();
         URL.revokeObjectURL(url);
+    });
+
+    // Export to PDF
+    exportPdfBtn.addEventListener('click', async () => {
+        const content = slideInput.value;
+        if (!content.trim()) {
+            alert('Nothing to export! Please enter some content first.');
+            return;
+        }
+
+        // Validate content
+        const validation = SlideParser.validate(content);
+        if (!validation.isValid) {
+            alert('Please fix validation errors before exporting to PDF.');
+            return;
+        }
+
+        try {
+            // Show loading state
+            exportPdfBtn.disabled = true;
+            exportPdfBtn.textContent = 'Exporting...';
+
+            // Parse slides
+            const slides = SlideParser.parse(content);
+            
+            // Get current settings
+            const settings = {
+                theme: themeSelect.value,
+                font: fontSelect.value
+            };
+
+            // Export to PDF
+            await PDFExporter.exportToPDF(slides, settings, 'presentation.pdf');
+            
+            // Success feedback
+            alert('PDF exported successfully!');
+        } catch (error) {
+            console.error('PDF export error:', error);
+            alert('Failed to export PDF: ' + error.message);
+        } finally {
+            // Reset button state
+            exportPdfBtn.disabled = false;
+            exportPdfBtn.textContent = 'Export to PDF';
+        }
     });
 
     // Drag and drop functionality

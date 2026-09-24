@@ -18,6 +18,7 @@ Created by Masayoshi Takahashi, this presentation style emphasizes:
 📱 Mobile-friendly with tap navigation  
 💾 Auto-save to localStorage  
 🎯 Auto-scaling text to fit screen  
+📄 Export to PDF  
 🚀 No dependencies, pure vanilla JavaScript  
 
 ## Quick Start
@@ -76,6 +77,7 @@ Your slides here
 - `F` - Toggle fullscreen
 - `P` - Toggle progress bar
 - `C` - Toggle slide counter
+- `E` - Export to PDF
 - `?` - Show help
 - `Esc` - Exit presentation
 
