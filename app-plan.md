@@ -97,7 +97,7 @@ A minimalist presentation tool that embodies the Takahashi Method: **large text,
 - [ ] Separate presenter window
 
 ### Step 11: Export Capabilities
-- [ ] Export to PDF
+- [x] Export to PDF (via browser print dialog)
 - [ ] Export to standalone HTML
 - [ ] Export to images (PNG/JPG)
 - [ ] Print-friendly CSS

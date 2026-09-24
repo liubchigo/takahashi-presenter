@@ -16,6 +16,7 @@ const NavigationController = {
     onToggleHelp: null,
     onToggleOverview: null,
     onToggleAnimations: null,
+    onExportPdf: null,
 
     /**
      * Initialize navigation
@@ -167,6 +168,13 @@ const NavigationController = {
             case 'A':
                 e.preventDefault();
                 if (this.onToggleAnimations) this.onToggleAnimations();
+                break;
+
+            // Export to PDF
+            case 'x':
+            case 'X':
+                e.preventDefault();
+                if (this.onExportPdf) this.onExportPdf();
                 break;
         }
     },
