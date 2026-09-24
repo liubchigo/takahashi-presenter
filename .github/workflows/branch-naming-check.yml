@@ -18,7 +18,7 @@ jobs:
         run: |
           echo "Checking branch: $BRANCH_NAME"
 
-          PATTERN='^[A-Za-z0-9._-]+/ZTID[-_][0-9]+(?:[-_][A-Za-z0-9._-]+)?$'
+          PATTERN='^[A-Za-z0-9._-]+/ZTID[-_][0-9]+([-_][A-Za-z0-9._-]+)?$'
 
           if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
             echo "❌ Branch name does not follow the convention."
